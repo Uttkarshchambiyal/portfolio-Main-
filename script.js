@@ -931,21 +931,15 @@ function initHighlightHoverImage() {
   if (!img || window.innerWidth < 992) return;
 
   const rows = document.querySelectorAll('.f1-highlight-grid.is-highlights');
-  const grads = [
-    'linear-gradient(135deg, #1a1a2e, #16213e)',
-    'linear-gradient(135deg, #2d132c, #801336)',
-    'linear-gradient(135deg, #0a3d62, #3c6382)',
-    'linear-gradient(135deg, #1b1a17, #f0a500)',
-    'linear-gradient(135deg, #0c0c1d, #6c5ce7)',
-  ];
-
   let mx = 0, my = 0, ix = 0, iy = 0, showing = false;
 
   document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
 
-  rows.forEach((row, i) => {
+  rows.forEach((row) => {
     row.addEventListener('mouseenter', () => {
-      img.style.background = grads[i % grads.length];
+      const preview = row.dataset.preview;
+      if (!preview) return;
+      img.style.backgroundImage = `linear-gradient(180deg, transparent 45%, rgba(5, 8, 12, 0.38)), url("${preview}")`;
       img.classList.add('is-visible');
       showing = true;
     });

@@ -1134,8 +1134,10 @@ p,
 .helmet-grid-item-bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  background-color: #0b0f14;
+  background-size: cover, 100% auto;
+  background-position: center, center top;
+  background-repeat: no-repeat;
   transition: transform var(--animation-default);
 }
 
@@ -1147,8 +1149,10 @@ p,
 .helmet-grid-item-reveal-img {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  background-color: #0b0f14;
+  background-size: cover, 100% auto;
+  background-position: center, center top;
+  background-repeat: no-repeat;
   clip-path: ellipse(100% 0% at 50% 0%);
   transition: clip-path var(--animation-default), transform var(--animation-default);
   z-index: 2;
@@ -1169,6 +1173,7 @@ p,
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.75);
 }
 
 .helmet-grid-item-title {
@@ -1228,8 +1233,8 @@ p,
 }
 
 .callout-socials-card-w {
-  width: clamp(280px, 22vw, 380px);
-  aspect-ratio: 3 / 4;
+  width: clamp(320px, 36vw, 560px);
+  aspect-ratio: 16 / 10;
   border-radius: 0.75rem;
   overflow: hidden;
   position: relative;
@@ -1254,6 +1259,12 @@ p,
   inset: 0;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.callout-socials-card-w:hover .callout-socials-card-bg {
+  transform: scale(1.06);
 }
 
 .callout-socials-card-content {
@@ -2377,7 +2388,7 @@ canvas[data-rive-hero-title] {
   /* Social cards */
   .callout-socials-card-w {
     width: clamp(200px, 70vw, 280px);
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 16 / 10;
   }
 
   /* Marquee */
