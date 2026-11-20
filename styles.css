@@ -580,7 +580,8 @@ a.hero-card-row:hover .hc-term svg, a.hero-card-row:hover .hc-term i { color: #6
   .stack-script { font-size: 27vw; top: 2%; left: 22%; }
 
   .hire-grid { grid-template-columns: 1fr; gap: 8vh; }
-  .hire-collage { height: 560px; max-width: 520px; width: 100%; margin: 0 auto; }
+  .hire-collage { height: 560px; max-width: 520px; width: 100%; margin: 70px auto 0; }
+  .hire-stamp { top: -78px; right: 2%; mix-blend-mode: normal; }
 
   .connect-title { margin-bottom: 36px; }
   .fan { --w: clamp(140px, 40vw, 200px); height: auto; display: grid; grid-template-columns: repeat(2, var(--w)); justify-content: center; gap: 30px 18px; }

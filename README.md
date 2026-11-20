@@ -59,7 +59,7 @@ npm run preview    # serve the production build
 | Tech logos | `public/logos/*.svg` ([Simple Icons](https://simpleicons.org/), CC0) |
 | Link-preview image | `public/og-image.jpg` (1200×630) |
 
-**Résumé:** drop a file at `public/resume.pdf` and a "Résumé (PDF)" button appears in the hire section automatically.
+**Résumé:** add the file at `public/resume.pdf`, then remove the `hidden` attribute from the "Résumé (PDF)" link in the hire section of `index.html`.
 
 ## Deploy
 

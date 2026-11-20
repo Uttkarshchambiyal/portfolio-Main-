@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroField();
   initPersonFX();
   loadLiveNumbers();
-  showResumeIfPresent();
 
   const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
   runLoader(fonts).then(() => {
@@ -752,13 +751,6 @@ async function loadLiveNumbers() {
 }
 
 // The résumé button appears only once public/resume.pdf exists
-function showResumeIfPresent() {
-  const btn = $('[data-resume]');
-  if (!btn) return;
-  fetch('/resume.pdf', { method: 'HEAD' })
-    .then((r) => { if (r.ok && (r.headers.get('content-type') || '').includes('pdf')) btn.hidden = false; })
-    .catch(() => {});
-}
 
 /* =========================================================
    BACKGROUNDS — raw WebGL
