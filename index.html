@@ -1,986 +1,515 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=5" />
-  <title>Uttkarsh Chambiyal – Frontend Developer & B.Tech CSE Student</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uttkarsh Chambiyal — Frontend Developer &amp; B.Tech CSE Student</title>
   <meta name="description"
-    content="Portfolio of Uttkarsh Chambiyal, a B.Tech CSE student in Bengaluru focused on frontend development, problem solving, DSA, and the MERN stack." />
-  <meta property="og:title" content="Uttkarsh Chambiyal – Frontend Developer & B.Tech CSE Student" />
-  <meta property="og:description"
-    content="Building interactive web experiences while learning full-stack development, strengthening DSA, and taking part in hackathons." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://uttkarshchambiyal.com/" />
-  <meta property="og:image" content="https://uttkarshchambiyal.com/person.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Uttkarsh Chambiyal – Frontend Developer & B.Tech CSE Student" />
-  <meta name="twitter:description" content="Frontend developer, DSA practitioner, and B.Tech CSE student based in Bengaluru." />
-  <meta name="twitter:image" content="https://uttkarshchambiyal.com/person.png" />
-  <meta name="theme-color" content="#101400" />
+    content="Uttkarsh Chambiyal is a B.Tech CSE student in Bengaluru building fast, animated web experiences, solving DSA problems every day and open to internships." />
+  <meta name="author" content="Uttkarsh Chambiyal" />
+  <link rel="canonical" href="https://www.uttkarshchambiyal.com/" />
+  <meta name="theme-color" content="#0b0d08" />
 
-  <!-- Preconnect -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.uttkarshchambiyal.com/" />
+  <meta property="og:title" content="Uttkarsh Chambiyal — Frontend Developer &amp; B.Tech CSE Student" />
+  <meta property="og:description" content="Fast, animated web experiences, daily DSA and open-source builds. Open to internships." />
+  <meta property="og:image" content="https://www.uttkarshchambiyal.com/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@uttkarshx26" />
+  <meta name="twitter:image" content="https://www.uttkarshchambiyal.com/og-image.jpg" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Uttkarsh Chambiyal",
+    "jobTitle": "Frontend Developer",
+    "url": "https://www.uttkarshchambiyal.com/",
+    "address": { "@type": "PostalAddress", "addressLocality": "Bengaluru", "addressCountry": "IN" },
+    "sameAs": [
+      "https://github.com/Uttkarshchambiyal",
+      "https://www.linkedin.com/in/uttkarsh-chambiyal/",
+      "https://x.com/uttkarshx26"
+    ]
+  }
+  </script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://cdn.prod.website-files.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..112,400..900&family=Cormorant:ital,wght@0,400;0,500;1,500&family=Kaushan+Script&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <noscript><style>.loader { display: none; } body.is-loading { overflow: auto; }</style></noscript>
 
-  <!-- Preload Mona Sans Variable Font -->
-  <link rel="preload"
-    href="https://cdn.prod.website-files.com/67b5a02dc5d338960b17a7e9/67bc6274c5b4108b123aa4d5_MonaSans-VariableFont_wdth%2Cwght.woff2"
-    as="font" type="font/woff2" crossorigin />
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles.css" />
-
-  <!-- Favicon & Touch Icons -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
-  <link rel="shortcut icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" href="/favicon.png" />
 
-  <!-- App Script (bundled via Vite) -->
   <script type="module" src="/script.js"></script>
 </head>
 
-<body data-edit="true">
+<body class="is-loading">
+  <a class="skip-link" href="#work">Skip to content</a>
 
-  <!-- Noise grain overlay (exact from original site) -->
-  <div class="noise-overlay"></div>
+  <!-- Fixed canvas: paints each section's background colour + slow contour lines -->
+  <canvas class="bg-gl" aria-hidden="true"></canvas>
 
-  <!-- Custom cursor glow (desktop only) -->
-  <div class="cursor-glow" id="cursorGlow"></div>
+  <!-- Loader: the signature writes itself -->
+  <div class="loader" aria-hidden="true"><div class="loader-sig" data-signature></div></div>
 
-  <!-- Mouse-follow hover image for highlight rows -->
-  <div class="highlight-hover-img" id="highlightHoverImg"></div>
-
-  <!-- ==========================================
-       PAGE LOADER
-       ========================================== -->
-  <div class="page-loader" id="pageLoader">
-    <div class="page-loader-logo">CHAMBIYAL</div>
-    <div class="page-loader-bar-track">
-      <div class="page-loader-bar" id="loaderBar"></div>
-    </div>
-  </div>
-
-  <!-- ==========================================
-       SCROLL PROGRESS INDICATOR
-       ========================================== -->
-  <div class="scroll-indicator">
-    <div class="scroll-indicator-bar" id="scrollBar"></div>
-  </div>
-
-  <!-- ==========================================
-       NAVIGATION
-       ========================================== -->
-  <nav class="nav" id="mainNav" data-nav-wrap>
-    <div class="nav-inner">
-      <!-- Brand -->
-      <a href="#" class="nav-brand" title="Uttkarsh Chambiyal">
-        UTTKARSH<span class="accent">CHAMBIYAL</span>
+  <!-- ================= HEADER ================= -->
+  <header class="header">
+    <a href="#top" class="logo" data-scroll-to aria-label="Uttkarsh Chambiyal, back to top">
+      <span class="logo-top">Uttkarsh</span>
+      <span class="logo-bottom">Chambiyal</span>
+    </a>
+    <div class="header-actions">
+      <a href="#hire" class="btn-lime" data-scroll-to>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4h12v8H2z M2 4l6 5 6-5" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span>Hire me</span>
       </a>
+      <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
+    </div>
+  </header>
 
-      <!-- Buttons -->
-      <div class="nav-btns" data-nav-group="btns">
-        <a data-theme="lime" href="mailto:uttkarshchambiyal26@gmail.com" class="btn-w is-nav">
-          <div class="btn-icon-w">
-            <svg width="17" height="18" viewBox="0 0 17 18" fill="none">
-              <path d="M2 4.5L8.5 10L15 4.5M2 13.5h13V4.5H2v9z" stroke="currentColor" stroke-width="1.5"
-                stroke-linejoin="round" />
-            </svg>
-          </div>
-          <span>Hire Me</span>
-        </a>
-        <button class="nav-ham" id="navHam" title="Open / Close Menu">
-          <div class="nav-rive-w">
-            <canvas data-rive-nav-hamburger id="riveHamburger" width="44" height="44"></canvas>
-          </div>
-          <span class="nav-ham-line"></span>
-          <span class="nav-ham-line"></span>
-          <span class="nav-ham-line"></span>
-        </button>
+  <nav class="menu" id="menu" aria-label="Main" aria-hidden="true">
+    <div class="menu-inner">
+      <ul class="menu-links">
+        <li><a href="#top" data-scroll-to>Home</a></li>
+        <li><a href="#journey" data-scroll-to><em>Journey</em></a></li>
+        <li><a href="#work" data-scroll-to>Work</a></li>
+        <li><a href="#practice" data-scroll-to><em>Practice</em></a></li>
+        <li><a href="#stack" data-scroll-to>Stack</a></li>
+        <li><a href="#hire" data-scroll-to><em>Hire me</em></a></li>
+      </ul>
+      <div class="menu-foot">
+        <a href="https://github.com/Uttkarshchambiyal" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/uttkarsh-chambiyal/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://x.com/uttkarshx26" target="_blank" rel="noopener">X</a>
       </div>
     </div>
   </nav>
 
-  <!-- Full-screen Menu Overlay -->
-  <div class="nav-menu-w" id="navMenu">
-    <div class="nav-menu-inner">
-      <a href="#hero" class="nav-menu-link" data-menu-link>Home</a>
-      <a href="#stats" class="nav-menu-link" data-menu-link>Stats</a>
-      <a href="#career" class="nav-menu-link" data-menu-link>Career</a>
-      <a href="#projects" class="nav-menu-link" data-menu-link>Projects</a>
-      <a href="#experience" class="nav-menu-link" data-menu-link>Journey</a>
-      <a href="#contact" class="nav-menu-link" data-menu-link>Contact</a>
-      <div class="nav-menu-social-w">
-        <a href="https://github.com/Uttkarshchambiyal" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://www.linkedin.com/in/uttkarsh-chambiyal/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="https://x.com/uttkarshx26" target="_blank" rel="noopener noreferrer">X / Twitter</a>
-      </div>
-    </div>
-  </div>
+  <main id="top">
 
-  <!-- ==========================================
-       MAIN CONTENT
-       ========================================== -->
-  <main class="main-w">
+    <!-- ================= HERO (light, portrait first; pins and the photo shrinks into the note frame) ================= -->
+    <section class="hero" data-theme="paper">
+      <canvas class="hero-gl" aria-hidden="true"></canvas>
+      <h1 class="sr-only">Uttkarsh Chambiyal, frontend developer and B.Tech CSE student in Bengaluru</h1>
 
-    <!-- ==========================================
-         SECTION 1 — HERO (ON-TRACK STYLE)
-         ========================================== -->
-    <section class="s-hero" id="hero" data-nav-theme-target="light">
-
-      <!-- Hero Title -->
-      <div class="hero-title-w">
-        <!-- Rive-style animated title accent (like original's phrase_on canvas) -->
-        <div class="hero-title-rive-w">
-          <canvas data-rive-hero-title id="riveHeroTitle" width="200" height="60"></canvas>
+      <div class="note-marquee" aria-hidden="true">
+        <div class="marquee-row serif-row" data-marquee="1">
+          <span>Learning in public&nbsp;·&nbsp;</span><span>Learning in public&nbsp;·&nbsp;</span><span>Learning in public&nbsp;·&nbsp;</span><span>Learning in public&nbsp;·&nbsp;</span>
         </div>
-        <div class="hero-title-top" split-text="lines" data-anim-high="right, lime">Frontend Developer</div>
-        <div class="hero-title-main" split-text="lines,chars" data-oval-scroll="top">CHAMBIYAL</div>
+        <div class="marquee-row sans-row" data-marquee="-1">
+          <span>Shipping every week&nbsp;·&nbsp;</span><span>Shipping every week&nbsp;·&nbsp;</span><span>Shipping every week&nbsp;·&nbsp;</span><span>Shipping every week&nbsp;·&nbsp;</span>
+        </div>
       </div>
 
-      <!-- WebGL 3D Background Canvas (like original's GL helmet scroll) -->
-      <canvas id="webglCanvas" class="webgl-canvas"></canvas>
+      <div class="hero-name" aria-hidden="true"><span>Uttkarsh</span></div>
 
-      <!-- Hero Info Grid — exact layout from on-track -->
-      <div class="hero-info-grid">
-        <div class="hero-sub-w">
-          <div class="text-on-t-stat-label-reg" split-text="lines" data-anim-high="right, lime">Uttkarsh Chambiyal</div>
-          <div style="display:flex;flex-direction:column;gap:0.25rem;">
-            <div class="text-on-t-stat-label-reg" split-text="lines" data-anim-high="right, lime">B.Tech CSE · Semester 2</div>
-            <div class="on-t-stat-label-flex">
-              <div class="text-on-t-stat-label-reg" split-text="lines" data-anim-high="right, lime">Bengaluru, India
-              </div>
-              <span style="font-size:1rem;">🇮🇳</span>
-            </div>
-          </div>
+      <div class="scene-frame">
+        <div class="hero-photo">
+          <div class="hp-media"><img class="hp-base" src="/person.png" alt="Portrait of Uttkarsh Chambiyal" width="1024" height="571" fetchpriority="high" /></div>
         </div>
+      </div>
 
-        <!-- Hero Stats Widget Area -->
-        <div class="hero-stats-ui-w">
-          <div class="hero-stats-para-w">
-            <div class="eyebrow-w c-grey-on-track">
-              <div class="text-eyebrow" split-text="lines" data-anim-high="right, lime">building the future</div>
-            </div>
-            <h2 class="text-body-lg-mona" split-text="lines" data-anim-high="right, lime" style="margin-top:0.75rem;">
-              B.Tech Computer Science student based in Bengaluru, building interactive web experiences while strengthening
-              <span class="text-body-lg-brier c-lime">data structures, algorithms</span>, and full-stack development skills.
-            </h2>
+      <p class="caption scene-caption">A note from Uttkarsh</p>
+      <div class="scene-sig" data-signature></div>
+
+      <!-- small notched card, bottom left -->
+      <aside class="hero-card" aria-label="Right now">
+        <svg class="hero-card-outline" viewBox="0 0 112 212" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M8 22.5H72Q78.5 22.5 81 16.5L84 7Q86.5 .5 93 .5H104Q111.5 .5 111.5 8V204Q111.5 211.5 104 211.5H8Q.5 211.5 .5 204V30Q.5 22.5 8 22.5Z" />
+        </svg>
+        <p class="caption hero-card-top">Now building</p>
+        <a class="hero-card-row" href="#work" data-scroll-to>
+          <span class="hero-card-icon hc-term" aria-hidden="true">
+            <svg viewBox="0 0 40 28" fill="none"><rect x=".75" y=".75" width="38.5" height="26.5" rx="5" stroke="currentColor" stroke-width="1.2" /><path d="M9 10l5 4-5 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            <i></i>
+          </span>
+          <span class="caption">Flux</span>
+          <span class="caption">interpreter</span>
+        </a>
+        <span class="hero-card-line" aria-hidden="true"></span>
+        <div class="hero-card-row">
+          <span class="hero-card-icon hc-brace" aria-hidden="true">{ }</span>
+          <span class="caption">B.Tech CSE<br />since 2025</span>
+        </div>
+      </aside>
+
+      <div class="hero-side">
+        <p class="caption hero-avail"><span class="dot dot-dark"></span>Open to internships · 2026</p>
+        <p class="hero-side-text">Frontend developer &amp; CSE student building <em>fast, animated</em> web experiences.</p>
+        <a href="#work" class="btn-lime" data-scroll-to><span>View my work</span><span aria-hidden="true">↓</span></a>
+      </div>
+    </section>
+
+    <!-- ================= STATEMENT ================= -->
+    <section class="note" data-theme="olive">
+      <div class="statement-wrap">
+        <p class="caption statement-cap">B.Tech CSE &nbsp;·&nbsp; Bengaluru</p>
+        <p class="statement" data-words>
+          Turning <em>ideas</em> into interfaces, solving <em>problems</em> every day and shipping
+          it all to the <em>web</em>. Learning in public, one commit at a time.
+        </p>
+      </div>
+    </section>
+
+    <!-- ================= JOURNEY — horizontal gallery, olive fades to paper ================= -->
+    <section class="journey" id="journey" data-theme="olive" aria-label="The journey">
+      <div class="hz-pin">
+        <div class="hz-track">
+          <div class="hz-col hz-col-intro">
+            <p class="caption hz-cap">2025 → now</p>
+            <h2 class="title"><span class="title-sans">The</span><span class="title-serif">journey</span></h2>
+            <p class="hz-intro-text" data-hl>From my first <b>hello, world</b> to a language of my own. Keep scrolling.</p>
           </div>
 
-          <!-- Stat UI Boxes — exact pattern from on-track hero -->
-          <div class="hero-stats-grid">
-            <div class="hero-stats-ui-box">
-              <div class="eyebrow-w c-grey-on-track eyebrow-label">
-                <div class="text-eyebrow">Primary Focus</div>
+          <div class="hz-col hz-col-1">
+            <figure class="hz-item hz-s1">
+              <figcaption class="caption hz-cap">Bengaluru, 2025</figcaption>
+              <div class="tile tile-day"><span class="tile-day-no">Day 01</span><span class="tile-day-txt">B.Tech, Computer Science &amp; Engineering</span></div>
+            </figure>
+            <figure class="hz-item hz-s2">
+              <figcaption class="caption hz-cap">First program, 2025</figcaption>
+              <div class="tile tile-code" aria-label="A first C program that prints hello, world">
+                <span class="tile-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+<pre><code><span class="k">#include</span> <span class="s">&lt;stdio.h&gt;</span>
+
+<span class="k">int</span> main(<span class="k">void</span>) {
+  printf(<span class="s">"hello, world\n"</span>);
+  <span class="k">return</span> 0;
+}</code></pre>
               </div>
-              <div class="text-on-t-stat-label-reg">Frontend Development + DSA</div>
-            </div>
-            <div class="hero-stats-ui-box">
-              <div class="eyebrow-w c-grey-on-track eyebrow-label">
-                <div class="text-eyebrow">Current Status</div>
+            </figure>
+          </div>
+
+          <div class="hz-col hz-col-2">
+            <blockquote class="hz-quote">
+              <p>I don't wait to feel <b>ready</b>. I build it, break it, and <b>learn</b> from what's left.</p>
+              <span class="hz-sig" data-signature></span>
+            </blockquote>
+            <figure class="hz-item hz-s3">
+              <figcaption class="caption hz-cap">Learning in public, 2025</figcaption>
+              <div class="tile tile-graph"><div class="graph" aria-hidden="true"></div><p class="tile-graph-txt"><b>Every day on GitHub</b><span>DSA in C, Java, website clones and my first portfolio</span></p></div>
+            </figure>
+          </div>
+
+          <div class="hz-col hz-col-3">
+            <figure class="hz-item hz-s4">
+              <figcaption class="caption hz-cap">Flux, 2026</figcaption>
+              <div class="tile tile-term" aria-label="The Flux REPL doubling a list with a pipeline">
+                <span class="tile-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+<pre><code><span class="p">flux&gt;</span> [1, 2, 3] |&gt; map(x =&gt; x * 2)
+<span class="o">[2, 4, 6]</span>
+<span class="p">flux&gt;</span> let greet = (n) =&gt; "hi " + n
+<span class="p">flux&gt;</span> greet("world")
+<span class="o">"hi world"</span>
+<span class="p">flux&gt;</span> <span class="cursor-blink"></span></code></pre>
               </div>
-              <div class="text-on-t-stat-label-reg">Open to Internships & Hackathons</div>
-            </div>
-            <div class="hero-stats-ui-box">
-              <div class="eyebrow-w c-grey-on-track eyebrow-label">
-                <div class="text-eyebrow">Currently Learning</div>
-              </div>
-              <div class="text-on-t-stat-label-reg">MERN + System Design + AI/ML</div>
-            </div>
+            </figure>
+            <figure class="hz-item hz-s5">
+              <figcaption class="caption hz-cap">Horizon County, 2026</figcaption>
+              <div class="tile tile-stat"><span class="tile-stat-num">36.7<small>km</small></span><span class="tile-stat-txt">of roads in a Three.js world</span></div>
+            </figure>
+          </div>
+
+          <div class="hz-col hz-col-4">
+            <blockquote class="hz-quote">
+              <p>Every problem I solve goes on <b>GitHub</b>: the wins and the <b>wrong answers</b>.</p>
+              <span class="hz-sig" data-signature></span>
+            </blockquote>
+            <figure class="hz-item hz-s6">
+              <figcaption class="caption hz-cap">Now, 2026</figcaption>
+              <a class="tile tile-now" href="#hire" data-scroll-to>
+                <span class="tile-now-top"><span class="dot dot-dark"></span>Open to internships</span>
+                <span class="tile-now-big">Next<br>chapter?</span>
+                <span class="tile-now-go">Let's talk <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11h14M12 5l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+              </a>
+            </figure>
           </div>
         </div>
       </div>
     </section>
 
-
-    <!-- ==========================================
-         SECTION 2 — IMPACT TEXT (exact from on-track)
-         ========================================== -->
-    <section class="s" id="impact">
-      <div class="c">
-        <div class="impact-content-w on-track">
-          <div class="impact-icon-w">
-            <div class="eyebrow-w c-grey-on-track">
-              <div class="text-eyebrow" split-text="lines" data-anim-high="right, lime">B.Tech CSE · Semester 2</div>
-            </div>
-          </div>
-          <div class="on-track-impact-text-w">
-            <div class="text-impact-lg-mona" split-text="lines" data-anim-high="top">
-              Challenging<br>the <strong>limits</strong>, <strong>building</strong> products. Bringing <strong>it
-                all</strong> each and every sprint.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ==========================================
-         SECTION 3 — STAT COUNTER GRID (6 metrics)
-         ========================================== -->
-    <section class="s" id="stats">
-      <div class="c">
-
-        <!-- Podium-style big number -->
-        <div class="on-t-podium-text-layout">
-          <div class="text-on-t-stat-label-gigantic" data-counter-big>22</div>
-          <div class="on-t-podium-text-col">
-            <div class="text-on-t-large-number">projects</div>
-          </div>
-        </div>
-
-        <div class="spacer._8rem" style="height:6rem;"></div>
-
-        <!-- 6-item grid -->
-        <div class="stat-counter-grid">
-          <div class="stat-counter-item">
-            <div class="stat-counter-num"><span data-counter="22">0</span>
-            </div>
-            <div class="stat-counter-label">Original Repositories</div>
-          </div>
-          <div class="stat-counter-item">
-            <div class="stat-counter-num"><span data-counter="26">0</span>
-            </div>
-            <div class="stat-counter-label">Public Repositories</div>
-          </div>
-          <div class="stat-counter-item">
-            <div class="stat-counter-num"><span data-counter="9">0</span>
-            </div>
-            <div class="stat-counter-label">Live Project Demos</div>
-          </div>
-          <div class="stat-counter-item">
-            <div class="stat-counter-num"><span data-counter="7">0</span></div>
-            <div class="stat-counter-label">Primary Languages</div>
-          </div>
-          <div class="stat-counter-item">
-            <div class="stat-counter-num"><span data-counter="31">0</span></div>
-            <div class="stat-counter-label">GitHub Followers</div>
-          </div>
-          <div class="stat-counter-item">
-            <div class="stat-counter-num"><span data-counter="26">0</span>
-            </div>
-            <div class="stat-counter-label">Repository Stars</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!-- ==========================================
-         MARQUEE DIVIDER
-         ========================================== -->
-    <div class="marquee-w">
-      <div class="marquee-track">
-        <div class="marquee-item">REACT<span class="dot">·</span>NODE.JS<span class="dot">·</span>MONGODB<span
-            class="dot">·</span>EXPRESS<span class="dot">·</span>NEXT.JS<span class="dot">·</span>AI/ML<span
-            class="dot">·</span>GSAP<span class="dot">·</span>TAILWIND</div>
-        <div class="marquee-item">REACT<span class="dot">·</span>NODE.JS<span class="dot">·</span>MONGODB<span
-            class="dot">·</span>EXPRESS<span class="dot">·</span>NEXT.JS<span class="dot">·</span>AI/ML<span
-            class="dot">·</span>GSAP<span class="dot">·</span>TAILWIND</div>
-      </div>
-    </div>
-
-
-    <!-- ==========================================
-         SECTION 4 — CAREER STATS (F1 career style)
-         ========================================== -->
-    <section class="s" id="career">
-      <div class="c">
-        <div class="title-layout grid-main">
-          <div class="title-headline-w">
-            <h2 class="text-title-lg-mona" split-text="lines" data-anim-high="right, lime">
-              developer journey<br><span class="text-title-lg-brier c-grey-on-track">in public</span>
-            </h2>
-          </div>
-          <div class="title-para-w c-grey-on-track">
-            <p class="text-body-reg-mona" split-text="lines" data-anim-high="right, lime">
-              I build responsive frontend projects, practise data structures and algorithms, and explore full-stack
-              development through semester work, hackathons, and self-directed learning.
-            </p>
-          </div>
-        </div>
-
-        <!-- 4-column stats grid — exact pattern from on-track's F1 career stats -->
-        <div class="f1-car-stats-grid">
-          <div class="f1-car-stats-item">
-            <div class="eyebrow-w c-grey-on-track">
-              <h3 class="text-descriptor" split-text="lines" data-anim-high="right, lime">original<br>repositories</h3>
-            </div>
-            <div class="f1-car-stats-large-num-w">
-              <div class="text-on-t-large-number" data-car-counter="digit">22</div>
-            </div>
-          </div>
-
-          <div class="f1-car-stats-item">
-            <div class="eyebrow-w c-grey-on-track">
-              <h3 class="text-descriptor" split-text="lines" data-anim-high="right, lime">github<br>repositories</h3>
-            </div>
-            <div class="f1-car-stats-large-num-w">
-              <div class="text-on-t-large-number" data-car-counter="digit">26</div>
-            </div>
-          </div>
-
-          <div class="f1-car-stats-item">
-            <div class="eyebrow-w c-grey-on-track">
-              <h3 class="text-descriptor" split-text="lines" data-anim-high="right, lime">live<br>project demos</h3>
-            </div>
-            <div class="f1-car-stats-large-num-w">
-              <div class="text-on-t-large-number" data-car-counter="digit">9</div>
-            </div>
-          </div>
-
-          <div class="f1-car-stats-item">
-            <div class="eyebrow-w c-grey-on-track">
-              <h3 class="text-descriptor" split-text="lines" data-anim-high="right, lime">github<br>followers</h3>
-            </div>
-            <div class="f1-car-stats-large-num-w">
-              <div class="text-on-t-large-number" data-car-counter="digit">31</div>
-            </div>
-          </div>
-
-          <!-- Season / Skills table — like on-track's F1 Seasons -->
-          <div class="f1-car-stat-past-v2-w">
-            <div class="eyebrow-w c-grey-on-track" style="margin-bottom:0.5rem;">
-              <h3 class="text-descriptor" split-text="lines" data-anim-high="right, lime">Skill Areas</h3>
-            </div>
-            <div class="f1-car-stat-past-v2-grid-item top">
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="eyebrow-w c-grey-on-track">
-                  <div class="text-eyebrow">Area</div>
-                </div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="eyebrow-w c-grey-on-track">
-                  <div class="text-eyebrow">Status</div>
-                </div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="eyebrow-w c-grey-on-track">
-                  <div class="text-eyebrow">Technologies</div>
-                </div>
-              </div>
-            </div>
-            <div class="f1-car-stat-past-v2-grid-item" data-stat-item>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Languages</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Active</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Java · C · C++ · JavaScript</div>
-              </div>
-            </div>
-            <div class="f1-car-stat-past-v2-grid-item" data-stat-item>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Frontend</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Active</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">HTML · CSS · JavaScript · Bootstrap</div>
-              </div>
-            </div>
-            <div class="f1-car-stat-past-v2-grid-item" data-stat-item>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Problem Solving</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Active</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">LeetCode · HackerRank · GFG</div>
-              </div>
-            </div>
-            <div class="f1-car-stat-past-v2-grid-item" data-stat-item>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Tools & Design</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Active</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Git · GitHub · GitLab · Figma</div>
-              </div>
-            </div>
-            <div class="f1-car-stat-past-v2-grid-item" data-stat-item>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">MERN Stack</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">Learning</div>
-              </div>
-              <div class="f1-car-stat-past-v2-grid-inner">
-                <div class="text-on-t-stat-label-reg">React · Node.js · MongoDB</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- CTA — exact button style from on-track -->
-        <a data-theme="lime" href="https://github.com/Uttkarshchambiyal" target="_blank" rel="noopener noreferrer" class="btn-w"
-          data-anim="text-hover">
-          <span>View All Projects on GitHub</span>
-          <div class="btn-icon-w">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M4 12L12 4M12 4H5M12 4v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-          </div>
+    <!-- ================= BUILD / SOLVE ================= -->
+    <section class="split" data-theme="paper">
+      <span class="split-glyph split-glyph-l" aria-hidden="true">&#123;</span>
+      <span class="split-glyph split-glyph-r" aria-hidden="true">&#125;</span>
+      <div class="split-inner">
+        <a class="split-col split-col-l" href="#work" data-scroll-to>
+          <h2 class="split-title"><span class="title-serif">Build<svg class="swoosh" viewBox="0 0 300 40" fill="none" aria-hidden="true"><path pathLength="1" d="M6 30 C 70 12, 160 6, 294 16" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg></span><span class="title-sans">things</span></h2>
+          <p class="split-text" data-hl>Six pinned <b>projects</b>, from a language interpreter to a 3D driving world.</p>
+          <span class="split-go" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11h14M12 5l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+        <a class="split-col split-col-r" href="#practice" data-scroll-to>
+          <h2 class="split-title"><span class="title-serif">Solve<svg class="swoosh" viewBox="0 0 300 40" fill="none" aria-hidden="true"><path pathLength="1" d="M6 30 C 70 12, 160 6, 294 16" stroke="currentColor" stroke-width="7" stroke-linecap="round"/></svg></span><span class="title-sans">problems</span></h2>
+          <p class="split-text" data-hl><b>197 problems</b> and counting, every one committed to GitHub.</p>
+          <span class="split-go" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M4 11h14M12 5l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
         </a>
       </div>
     </section>
 
-
-    <!-- ==========================================
-         SECTION 5 — RESULT HIGHLIGHTS (project highlights)
-         ========================================== -->
-    <section class="s" id="highlights">
-      <div class="c">
-        <div class="title-layout grid-main">
-          <div class="title-headline-w">
-            <h2 class="text-title-lg-mona" split-text="lines" data-anim-high="right, lime">
-              project<br><span class="text-title-lg-brier c-grey-on-track">highlights</span>
-            </h2>
-          </div>
-          <div class="title-para-w c-grey-on-track">
-            <p class="text-body-reg-mona" split-text="lines" data-anim-high="right, lime">
-              Verified projects from my GitHub that show frontend development, local-first product thinking,
-              responsive interfaces, teamwork, and fast hackathon execution.
-            </p>
-          </div>
+    <!-- ================= WORK — staggered card grid ================= -->
+    <section class="work" id="work" data-theme="night">
+      <div class="container">
+        <header class="section-head">
+          <h2 class="title"><span class="title-sans">Selected</span><span class="title-serif">work</span></h2>
+          <p class="section-intro" data-hl>The six projects pinned on my GitHub, from a programming language to a 3D driving world.</p>
+        </header>
+        <div class="pgrid">
+            <div class="pcol">
+              <article class="pcard" style="--accent:#2b5cff">
+                <a class="pcard-media" href="https://python-mastery-tracker.vercel.app" target="_blank" rel="noopener" aria-label="Open Python Mastery Tracker">
+                  <span class="pcard-glow" aria-hidden="true"></span>
+                  <img src="/project-previews/python-mastery-tracker.webp" alt="Python Mastery Tracker preview" width="1600" height="1000" loading="lazy" decoding="async" />
+                  <span class="pcard-view" aria-hidden="true">View<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3v6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+                <div class="pcard-body">
+                  <p class="caption pcard-kind"><span>01</span>Learning tool</p>
+                  <p class="pcard-desc">A gamified, local-first Python tracker with a 10-phase curriculum, streaks, a Pomodoro timer and a LinkedIn post generator.</p>
+                  <ul class="pcard-tags"><li>React</li><li>TypeScript</li><li>Tailwind</li></ul>
+                </div>
+                <div class="pcard-foot">
+                  <div class="pcard-links"><a href="https://python-mastery-tracker.vercel.app" target="_blank" rel="noopener">Live site<span aria-hidden="true">↗</span></a><a href="https://github.com/Uttkarshchambiyal/Python-Mastery-Tracker" target="_blank" rel="noopener">Code<span aria-hidden="true">↗</span></a></div>
+                  <h3 class="pcard-label"><b>Python Mastery Tracker</b><span>2026</span></h3>
+                </div>
+              </article>
+              <article class="pcard" style="--accent:#d2ff00">
+                <a class="pcard-media" href="https://horizon-drive-coast.uttkarshchambiyal.chatgpt.site" target="_blank" rel="noopener" aria-label="Open Horizon County">
+                  <span class="pcard-glow" aria-hidden="true"></span>
+                  <img src="/project-previews/horizon-county.webp" alt="Horizon County preview" width="1600" height="1000" loading="lazy" decoding="async" />
+                  <span class="pcard-view" aria-hidden="true">View<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3v6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+                <div class="pcard-body">
+                  <p class="caption pcard-kind"><span>02</span>Three.js world</p>
+                  <p class="pcard-desc">An original browser driving world: nine cars, 36.7 km of roads, career events and three stunt tracks.</p>
+                  <ul class="pcard-tags"><li>Three.js</li><li>JavaScript</li><li>WebGL</li></ul>
+                </div>
+                <div class="pcard-foot">
+                  <div class="pcard-links"><a href="https://horizon-drive-coast.uttkarshchambiyal.chatgpt.site" target="_blank" rel="noopener">Live site<span aria-hidden="true">↗</span></a><a href="https://github.com/Uttkarshchambiyal/horizon-county" target="_blank" rel="noopener">Code<span aria-hidden="true">↗</span></a></div>
+                  <h3 class="pcard-label"><b>Horizon County</b><span>2026</span></h3>
+                </div>
+              </article>
+            </div>
+            <div class="pcol">
+              <article class="pcard" style="--accent:#e6e8d8">
+                <a class="pcard-media" href="https://github.com/Uttkarshchambiyal/a-programming-language-interpreter" target="_blank" rel="noopener" aria-label="Open Flux Interpreter">
+                  <span class="pcard-glow" aria-hidden="true"></span>
+                  <img src="/project-previews/flux-interpreter.webp" alt="Flux Interpreter preview" width="1600" height="1000" loading="lazy" decoding="async" />
+                  <span class="pcard-view" aria-hidden="true">View<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3v6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+                <div class="pcard-body">
+                  <p class="caption pcard-kind"><span>03</span>Programming language</p>
+                  <p class="pcard-desc">A small programming language with pipeline syntax, closures and an interactive REPL, built one token at a time.</p>
+                  <ul class="pcard-tags"><li>Interpreter</li><li>Parser</li><li>REPL</li></ul>
+                </div>
+                <div class="pcard-foot">
+                  <div class="pcard-links"><a href="https://github.com/Uttkarshchambiyal/a-programming-language-interpreter" target="_blank" rel="noopener">Code<span aria-hidden="true">↗</span></a></div>
+                  <h3 class="pcard-label"><b>Flux Interpreter</b><span>2026</span></h3>
+                </div>
+              </article>
+              <article class="pcard" style="--accent:#ff5a1f">
+                <a class="pcard-media" href="https://uttkarshchambiyal.github.io/subway-surfers-rea/" target="_blank" rel="noopener" aria-label="Open Subway Surfers REA">
+                  <span class="pcard-glow" aria-hidden="true"></span>
+                  <img src="/project-previews/subway-surfers-rea.webp" alt="Subway Surfers REA preview" width="1600" height="1000" loading="lazy" decoding="async" />
+                  <span class="pcard-view" aria-hidden="true">View<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3v6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+                <div class="pcard-body">
+                  <p class="caption pcard-kind"><span>04</span>Game reconstruction</p>
+                  <p class="pcard-desc">An unofficial reconstruction for WebGL, Android and iOS, with recovered assets and shared gameplay across platforms.</p>
+                  <ul class="pcard-tags"><li>TypeScript</li><li>WebGL</li><li>Reverse engineering</li></ul>
+                </div>
+                <div class="pcard-foot">
+                  <div class="pcard-links"><a href="https://uttkarshchambiyal.github.io/subway-surfers-rea/" target="_blank" rel="noopener">Live site<span aria-hidden="true">↗</span></a><a href="https://github.com/Uttkarshchambiyal/subway-surfers-rea" target="_blank" rel="noopener">Code<span aria-hidden="true">↗</span></a></div>
+                  <h3 class="pcard-label"><b>Subway Surfers REA</b><span>2026</span></h3>
+                </div>
+              </article>
+            </div>
+            <div class="pcol">
+              <article class="pcard" style="--accent:#9fd36b">
+                <a class="pcard-media" href="https://main.d32my0bksmpqr2.amplifyapp.com/" target="_blank" rel="noopener" aria-label="Open ClaimLens">
+                  <span class="pcard-glow" aria-hidden="true"></span>
+                  <img src="/project-previews/claimlens.webp" alt="ClaimLens preview" width="1600" height="1000" loading="lazy" decoding="async" />
+                  <span class="pcard-view" aria-hidden="true">View<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3v6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+                <div class="pcard-body">
+                  <p class="caption pcard-kind"><span>05</span>AWS application</p>
+                  <p class="pcard-desc">Turns complex medical claim documents into a calm, traceable review where every finding links back to its source.</p>
+                  <ul class="pcard-tags"><li>Python</li><li>AWS Amplify</li></ul>
+                </div>
+                <div class="pcard-foot">
+                  <div class="pcard-links"><a href="https://main.d32my0bksmpqr2.amplifyapp.com/" target="_blank" rel="noopener">Live site<span aria-hidden="true">↗</span></a><a href="https://github.com/Uttkarshchambiyal/ClaimLens_AWS" target="_blank" rel="noopener">Code<span aria-hidden="true">↗</span></a></div>
+                  <h3 class="pcard-label"><b>ClaimLens</b><span>2026</span></h3>
+                </div>
+              </article>
+              <article class="pcard" style="--accent:#e0323c">
+                <a class="pcard-media" href="https://github.com/Uttkarshchambiyal/SwiftUI" target="_blank" rel="noopener" aria-label="Open SwiftUI Lab">
+                  <span class="pcard-glow" aria-hidden="true"></span>
+                  <img src="/project-previews/swiftui.webp" alt="SwiftUI Lab preview" width="1600" height="1000" loading="lazy" decoding="async" />
+                  <span class="pcard-view" aria-hidden="true">View<svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3v6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                </a>
+                <div class="pcard-body">
+                  <p class="caption pcard-kind"><span>06</span>Apple platforms</p>
+                  <p class="pcard-desc">A visual home for SwiftUI ideas: small projects and thoughtful interfaces, one idea at a time.</p>
+                  <ul class="pcard-tags"><li>SwiftUI</li><li>Xcode</li></ul>
+                </div>
+                <div class="pcard-foot">
+                  <div class="pcard-links"><a href="https://github.com/Uttkarshchambiyal/SwiftUI" target="_blank" rel="noopener">Code<span aria-hidden="true">↗</span></a></div>
+                  <h3 class="pcard-label"><b>SwiftUI Lab</b><span>2026</span></h3>
+                </div>
+              </article>
+            </div>
         </div>
-
-        <!-- Column headers — exact from on-track f1 highlights -->
-        <div class="f1-highlight-grid top highlights">
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="eyebrow-w c-grey-on-track">
-              <div class="text-eyebrow">Type</div>
-            </div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="eyebrow-w c-grey-on-track">
-              <div class="text-eyebrow">Project</div>
-            </div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="eyebrow-w c-grey-on-track">
-              <div class="text-eyebrow">Stack</div>
-            </div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="eyebrow-w c-grey-on-track">
-              <div class="text-eyebrow">Status</div>
-            </div>
-          </div>
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="eyebrow-w c-grey-on-track">
-              <div class="text-eyebrow">Impact</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Row items — exact grid pattern -->
-        <div class="f1-highlight-grid is-highlights" data-stat-item data-preview="/project-previews/python-mastery-tracker.png">
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-major">Learning Tool</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">Python Mastery Tracker</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">React + TypeScript</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major" style="color:var(--color--lime);">Live</div>
-            <div class="f1-highlight-trophy-w">
-              <svg viewBox="0 0 24 24" fill="var(--color--lime)">
-                <circle cx="12" cy="12" r="5" />
-              </svg>
-            </div>
-          </div>
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-reg">Local-first curriculum, streaks, timer & journal</div>
-          </div>
-        </div>
-
-        <div class="f1-highlight-grid is-highlights" data-stat-item data-preview="/project-previews/ai-study-buddy.png">
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-major">Hackathon</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">AI Study Buddy</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">Next.js + TypeScript</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">Complete</div>
-          </div>
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-reg">AI-powered student chat interface</div>
-          </div>
-        </div>
-
-        <div class="f1-highlight-grid is-highlights" data-stat-item data-preview="/project-previews/pw-hackathon.png">
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-major">Sprint Build</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">PW 2-Hour Hackathon</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">Next.js + TypeScript</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major" style="color:var(--color--lime);">Live</div>
-          </div>
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-reg">Designed and deployed under a 2-hour deadline</div>
-          </div>
-        </div>
-
-        <div class="f1-highlight-grid is-highlights" data-stat-item data-preview="/project-previews/ibm-chat-ui.png">
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-major">Team Project</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">IBM Chat UI</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">HTML + CSS + JavaScript</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major" style="color:var(--color--lime);">Live</div>
-            <div class="f1-highlight-trophy-w">
-              <svg viewBox="0 0 24 24" fill="var(--color--lime)">
-                <circle cx="12" cy="12" r="5" />
-              </svg>
-            </div>
-          </div>
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-reg">Responsive chat interface built with Cloud Coders</div>
-          </div>
-        </div>
-
-        <div class="f1-highlight-grid is-highlights" data-stat-item data-preview="/project-previews/team-agency.png">
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-major">Semester Project</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">The Team Agency</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major">HTML + CSS + JavaScript</div>
-          </div>
-          <div class="f1-highlight-grid-item">
-            <div class="text-on-t-stat-label-major" style="color:var(--color--lime);">Live</div>
-          </div>
-          <div class="f1-highlight-grid-item hide-mobile">
-            <div class="text-on-t-stat-label-reg">Dynamic team UI, themes & form validation</div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ==========================================
-         SECTION 6 — EXPERIENCE ACCORDION (Season/Calendar style)
-         ========================================== -->
-    <section class="s" id="experience">
-      <div class="c">
-        <div class="title-layout grid-main">
-          <div class="title-headline-w">
-            <h2 class="text-title-lg-mona" split-text="lines" data-anim-high="right, lime">
-              learning<br><span class="text-title-lg-brier c-grey-on-track">timeline</span>
-            </h2>
-          </div>
-        </div>
-
-        <!-- Accordion items — exact pattern from calendar dropdowns -->
-        <div class="calendar-dropdown-item" data-accordion>
-          <div class="calendar-dropdown-trigger" data-accordion-trigger>
-            <div class="text-on-t-stat-label-major">2026</div>
-            <div class="text-on-t-stat-label-major">Frontend Developer & DSA Practitioner</div>
-            <div class="text-on-t-stat-label-reg c-grey-on-track">Current</div>
-            <div class="calendar-dropdown-chevron">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </div>
-          </div>
-          <div class="calendar-dropdown-content">
-            <div class="calendar-dropdown-content-inner">
-              <div class="calendar-detail-item">
-                <div class="text-eyebrow" style="color:var(--color--lime-off);">Focus</div>
-                <div class="text-on-t-stat-label-reg">Frontend Development & Problem Solving</div>
-              </div>
-              <div class="calendar-detail-item">
-                <div class="text-eyebrow" style="color:var(--color--lime-off);">Currently Learning</div>
-                <div class="text-on-t-stat-label-reg">React, Node.js, MongoDB, System Design & AI/ML Basics</div>
-              </div>
-              <div class="calendar-detail-item">
-                <div class="text-eyebrow" style="color:var(--color--lime-off);">Goal</div>
-                <div class="text-on-t-stat-label-reg">Build interactive web experiences while preparing for internships,
-                  hackathons, freelance projects, and open-source contributions.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="calendar-dropdown-item" data-accordion>
-          <div class="calendar-dropdown-trigger" data-accordion-trigger>
-            <div class="text-on-t-stat-label-major">2026</div>
-            <div class="text-on-t-stat-label-major">Hackathon & Collaborative Projects</div>
-            <div class="text-on-t-stat-label-reg c-grey-on-track">Active</div>
-            <div class="calendar-dropdown-chevron">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </div>
-          </div>
-          <div class="calendar-dropdown-content">
-            <div class="calendar-dropdown-content-inner">
-              <div class="calendar-detail-item">
-                <div class="text-eyebrow" style="color:var(--color--lime-off);">Projects</div>
-                <div class="text-on-t-stat-label-reg">AI Study Buddy, PW 2-Hour Hackathon & IBM Chat UI</div>
-              </div>
-              <div class="calendar-detail-item">
-                <div class="text-eyebrow" style="color:var(--color--lime-off);">Stack</div>
-                <div class="text-on-t-stat-label-reg">Next.js, TypeScript, Tailwind CSS, HTML, CSS & JavaScript</div>
-              </div>
-              <div class="calendar-detail-item">
-                <div class="text-eyebrow" style="color:var(--color--lime-off);">Learning</div>
-                <div class="text-on-t-stat-label-reg">Rapid prototyping, responsive UI development, teamwork, and shipping
-                  projects under time constraints.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="calendar-dropdown-item" data-accordion>
-          <div class="calendar-dropdown-trigger" data-accordion-trigger>
-            <div class="text-on-t-stat-label-major">2025</div>
-            <div class="text-on-t-stat-label-major">GitHub Learning Journey</div>
-            <div class="text-on-t-stat-label-reg c-grey-on-track">Ongoing</div>
-            <div class="calendar-dropdown-chevron">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M6 9l6 6 6-6" />
-              </svg>
-            </div>
-          </div>
-          <div class="calendar-dropdown-content">
-            <div class="calendar-dropdown-content-inner">
-              <div class="calendar-detail-item">
-                <div class="text-eyebrow" style="color:var(--color--lime-off);">Education</div>
-                <div class="text-on-t-stat-label-reg">B.Tech Computer Science & Engineering · Semester 2</div>
-              </div>
-              <div class="calendar-detail-item">
-                <div class="text-eyebrow" style="color:var(--color--lime-off);">Foundations</div>
-                <div class="text-on-t-stat-label-reg">C, C++, Java, JavaScript, HTML, CSS & Git</div>
-              </div>
-              <div class="calendar-detail-item">
-                <div class="text-eyebrow" style="color:var(--color--lime-off);">Practice</div>
-                <div class="text-on-t-stat-label-reg">DSA repositories, Java mini-projects, frontend clones, JavaScript
-                  exercises, and responsive UI projects.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ==========================================
-         SECTION 7 — PROJECT GALLERY (Helmet Gallery style)
-         ========================================== -->
-    <section class="s" id="projects">
-      <div class="c">
-        <div class="title-layout grid-main">
-          <div class="title-headline-w">
-            <h2 class="text-title-lg-mona" split-text="lines" data-anim-high="right, lime">
-              featured<br><span class="text-title-lg-brier c-grey-on-track">projects</span>
-            </h2>
-          </div>
-        </div>
-
-        <div class="helmet-grid">
-          <!-- Project 1 -->
-          <a class="helmet-grid-item-w" data-helmet-item href="https://python-mastery-tracker.vercel.app" target="_blank" rel="noopener noreferrer" aria-label="Open the Python Mastery Tracker live demo">
-            <div class="helmet-grid-item-bg" style="background-image:linear-gradient(180deg, rgba(7,20,38,0.08) 35%, rgba(7,20,38,0.94) 100%), url('/project-previews/python-mastery-tracker.png');"></div>
-            <div class="helmet-grid-item-reveal-img" style="background-image:linear-gradient(180deg, rgba(0,56,255,0.02) 30%, rgba(7,20,38,0.86) 100%), url('/project-previews/python-mastery-tracker.png');">
-            </div>
-            <div class="helmet-grid-extender-icon">↗</div>
-            <div class="helmet-grid-item-content">
-              <div class="eyebrow-w">
-                <div class="text-eyebrow c-lime">React + TypeScript + Tailwind</div>
-              </div>
-              <div class="helmet-grid-item-title">Python Mastery Tracker</div>
-              <div class="helmet-grid-item-desc">Gamified, local-first Python learning tracker with a structured curriculum, streaks, study timer, journal, and LinkedIn post generator.</div>
-            </div>
-          </a>
-
-          <!-- Project 2 -->
-          <a class="helmet-grid-item-w" data-helmet-item href="https://github.com/Uttkarshchambiyal/Ai-hackathon" target="_blank" rel="noopener noreferrer" aria-label="View AI Study Buddy on GitHub">
-            <div class="helmet-grid-item-bg" style="background-image:linear-gradient(180deg, rgba(13,17,23,0.08) 30%, rgba(13,17,23,0.96) 100%), url('/project-previews/ai-study-buddy.png');"></div>
-            <div class="helmet-grid-item-reveal-img" style="background-image:linear-gradient(180deg, rgba(13,17,23,0.02) 25%, rgba(13,17,23,0.9) 100%), url('/project-previews/ai-study-buddy.png');">
-            </div>
-            <div class="helmet-grid-extender-icon">↗</div>
-            <div class="helmet-grid-item-content">
-              <div class="eyebrow-w">
-                <div class="text-eyebrow c-lime">Next.js 14 + TypeScript + Tailwind</div>
-              </div>
-              <div class="helmet-grid-item-title">AI Study Buddy</div>
-              <div class="helmet-grid-item-desc">Hackathon project with a responsive study landing page and AI-powered chat interface for student questions.</div>
-            </div>
-          </a>
-
-          <!-- Project 3 -->
-          <a class="helmet-grid-item-w" data-helmet-item href="https://pw-2hr-hackathon.vercel.app" target="_blank" rel="noopener noreferrer" aria-label="Open the PW 2-Hour Hackathon live demo">
-            <div class="helmet-grid-item-bg" style="background-image:linear-gradient(180deg, rgba(45,19,8,0.06) 30%, rgba(45,19,8,0.94) 100%), url('/project-previews/pw-hackathon.png');"></div>
-            <div class="helmet-grid-item-reveal-img" style="background-image:linear-gradient(180deg, rgba(45,19,8,0.02) 25%, rgba(45,19,8,0.88) 100%), url('/project-previews/pw-hackathon.png');">
-            </div>
-            <div class="helmet-grid-extender-icon">↗</div>
-            <div class="helmet-grid-item-content">
-              <div class="eyebrow-w">
-                <div class="text-eyebrow c-lime">Next.js 14 + TypeScript</div>
-              </div>
-              <div class="helmet-grid-item-title">PW 2-Hour Hackathon</div>
-              <div class="helmet-grid-item-desc">A responsive product landing page with spatial card depth, glassmorphism pricing, and polished micro-interactions.</div>
-            </div>
-          </a>
-
-          <!-- Project 4 -->
-          <a class="helmet-grid-item-w" data-helmet-item href="https://www.chatuicloudcoders.online/" target="_blank" rel="noopener noreferrer" aria-label="Open the IBM Chat UI live demo">
-            <div class="helmet-grid-item-bg" style="background-image:linear-gradient(180deg, rgba(17,17,32,0.08) 30%, rgba(17,17,32,0.96) 100%), url('/project-previews/ibm-chat-ui.png');"></div>
-            <div class="helmet-grid-item-reveal-img" style="background-image:linear-gradient(180deg, rgba(17,17,32,0.02) 25%, rgba(17,17,32,0.9) 100%), url('/project-previews/ibm-chat-ui.png');">
-            </div>
-            <div class="helmet-grid-extender-icon">↗</div>
-            <div class="helmet-grid-item-content">
-              <div class="eyebrow-w">
-                <div class="text-eyebrow c-lime">HTML + CSS + JavaScript</div>
-              </div>
-              <div class="helmet-grid-item-title">IBM Chat UI</div>
-              <div class="helmet-grid-item-desc">Responsive chat interface created as a collaborative IBM project with the Cloud Coders team.</div>
-            </div>
-          </a>
-
-          <!-- Project 5 -->
-          <a class="helmet-grid-item-w" data-helmet-item href="https://team-agency-portoflio.netlify.app/" target="_blank" rel="noopener noreferrer" aria-label="Open The Team Agency Portfolio live demo">
-            <div class="helmet-grid-item-bg" style="background-image:linear-gradient(180deg, rgba(16,20,0,0.03) 30%, rgba(16,20,0,0.94) 100%), url('/project-previews/team-agency.png');"></div>
-            <div class="helmet-grid-item-reveal-img" style="background-image:linear-gradient(180deg, rgba(16,20,0,0.01) 25%, rgba(16,20,0,0.9) 100%), url('/project-previews/team-agency.png');">
-            </div>
-            <div class="helmet-grid-extender-icon">↗</div>
-            <div class="helmet-grid-item-content">
-              <div class="eyebrow-w">
-                <div class="text-eyebrow c-lime">HTML + CSS + JavaScript</div>
-              </div>
-              <div class="helmet-grid-item-title">The Team Agency</div>
-              <div class="helmet-grid-item-desc">Semester project featuring data-driven team cards, responsive layouts, persistent themes, and contact-form validation.</div>
-            </div>
-          </a>
-
-          <!-- Project 6 -->
-          <a class="helmet-grid-item-w" data-helmet-item href="https://tailwind-projects-nu.vercel.app" target="_blank" rel="noopener noreferrer" aria-label="Open the Tailwind Projects live demo">
-            <div class="helmet-grid-item-bg" style="background-image:linear-gradient(180deg, rgba(12,12,29,0.03) 30%, rgba(12,12,29,0.94) 100%), url('/project-previews/tailwind-projects.png');"></div>
-            <div class="helmet-grid-item-reveal-img" style="background-image:linear-gradient(180deg, rgba(12,12,29,0.01) 25%, rgba(12,12,29,0.9) 100%), url('/project-previews/tailwind-projects.png');">
-            </div>
-            <div class="helmet-grid-extender-icon">↗</div>
-            <div class="helmet-grid-item-content">
-              <div class="eyebrow-w">
-                <div class="text-eyebrow c-lime">HTML + Tailwind CSS + JavaScript</div>
-              </div>
-              <div class="helmet-grid-item-title">Tailwind Projects</div>
-              <div class="helmet-grid-item-desc">A mobile-first collection of responsive landing pages, cards, navbars, forms, and dashboard components.</div>
-            </div>
-          </a>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- ==========================================
-         SECTION 8 — CONTACT (Social Cards style)
-         ========================================== -->
-    <section class="s" id="contact">
-      <div class="c">
-        <div class="impact-content-w" style="align-items:center;text-align:center;">
-          <div class="eyebrow-w c-grey-on-track">
-            <div class="text-eyebrow" split-text="lines" data-anim-high="right, lime">get in touch</div>
-          </div>
-          <div class="text-impact-lg-mona" split-text="lines" data-anim-high="top" style="max-width:50rem;">
-            Let's <strong>build</strong> something <strong>great</strong> together.
-          </div>
-          <div class="contact-links" style="margin-top:2rem;">
-            <a data-theme="lime" href="mailto:uttkarshchambiyal26@gmail.com" class="btn-w">
-              <span>Email Me</span>
-              <div class="btn-icon-w">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M4 12L12 4M12 4H5M12 4v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </div>
-            </a>
-            <a data-theme="outline" href="https://github.com/Uttkarshchambiyal" target="_blank" rel="noopener noreferrer" class="btn-w">
-              <span>GitHub</span>
-              <div class="btn-icon-w">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M4 12L12 4M12 4H5M12 4v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </div>
-            </a>
-            <a data-theme="outline" href="https://www.linkedin.com/in/uttkarsh-chambiyal/" target="_blank" rel="noopener noreferrer" class="btn-w">
-              <span>LinkedIn</span>
-              <div class="btn-icon-w">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M4 12L12 4M12 4H5M12 4v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </div>
-            </a>
-            <a data-theme="outline" href="https://x.com/uttkarshx26" target="_blank" rel="noopener noreferrer" class="btn-w">
-              <span>X / Twitter</span>
-              <div class="btn-icon-w">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path d="M4 12L12 4M12 4H5M12 4v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </div>
-            </a>
-          </div>
+        <div class="work-more">
+          <span class="work-more-icon" aria-hidden="true">&lt;/&gt;</span>
+          <p class="work-more-text">Thirty-eight repositories and counting,<br>all of them public on GitHub</p>
+          <a href="https://github.com/Uttkarshchambiyal?tab=repositories" target="_blank" rel="noopener" class="btn-lime"><span>All projects on GitHub</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3v6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         </div>
       </div>
     </section>
 
-    <!-- ==========================================
-         SOCIAL CARDS — HORIZONTAL SCROLL
-         (exact from landonorris.com callout-socials)
-         ========================================== -->
-    <section class="social-cards-section">
-      <div class="social-cards-title">
-        <div class="eyebrow-w c-grey-on-track">
-          <div class="text-eyebrow" split-text="lines" data-anim-high="right, lime">connect</div>
+    <!-- ================= PRACTICE ================= -->
+    <section class="practice" id="practice" data-theme="night">
+      <div class="practice-pin">
+        <div class="container practice-board">
+          <div class="practice-left">
+            <p class="caption practice-cap"><span class="dot"></span>Counted live from GitHub</p>
+            <div class="odo" data-practice="total" data-value="197" role="img" aria-label="197 problems solved"></div>
+            <h2 class="title"><span class="title-sans">Problems solved</span><span class="title-serif">&amp; counting</span></h2>
+            <p class="section-intro">Every problem I solve is committed to a public journal on GitHub. Hover a platform to see its share.</p>
+            <ul class="plegend">
+              <li><a class="pl" data-key="leetcode" style="--c:#d2ff00" href="https://github.com/Uttkarshchambiyal/LEET-CODE" target="_blank" rel="noopener"><i></i><span class="pl-name">LeetCode</span><span class="pl-lang">C++ · C</span><span class="pl-num" data-practice="leetcode" data-value="117">0</span></a></li>
+              <li><a class="pl" data-key="hackerrank" style="--c:#e6e8d8" href="https://github.com/Uttkarshchambiyal/hackerrank-c-solutions" target="_blank" rel="noopener"><i></i><span class="pl-name">HackerRank</span><span class="pl-lang">C</span><span class="pl-num" data-practice="hackerrank" data-value="54">0</span></a></li>
+              <li><a class="pl" data-key="codeforces" style="--c:#9fb85a" href="https://github.com/Uttkarshchambiyal/codeforces-problems" target="_blank" rel="noopener"><i></i><span class="pl-name">Codeforces</span><span class="pl-lang">C++</span><span class="pl-num" data-practice="codeforces" data-value="13">0</span></a></li>
+              <li><a class="pl" data-key="dsa" style="--c:#6f7d4c" href="https://github.com/Uttkarshchambiyal/dsa-problem-solving-c" target="_blank" rel="noopener"><i></i><span class="pl-name">DSA in C</span><span class="pl-lang">C</span><span class="pl-num" data-practice="dsa" data-value="13">0</span></a></li>
+            </ul>
+          </div>
+          <div class="matrix-wrap">
+            <div class="matrix" aria-hidden="true"></div>
+            <p class="caption matrix-cap"><span>Each square is one solved problem</span><span class="matrix-count">0 / 197</span></p>
+          </div>
         </div>
-        <h2 class="text-title-lg-mona" split-text="lines" data-anim-high="right, lime" style="margin-top:0.75rem;">
-          follow along</h2>
       </div>
-      <div class="callout-socials-w" id="socialCardsScroll">
-        <div class="callout-socials-track">
-          <a href="https://github.com/Uttkarshchambiyal" target="_blank" rel="noopener noreferrer" class="callout-socials-card-w">
-            <div class="callout-socials-card-bg" style="background-image:linear-gradient(180deg, rgba(5,8,12,0.02) 35%, rgba(5,8,12,0.75) 100%), url('/social-cards/github-code-and-commits.png');"></div>
-            <div class="callout-socials-card-content">
-              <div class="callout-socials-card-label">GitHub</div>
-              <div class="callout-socials-card-title">Code & Commits</div>
-            </div>
-          </a>
-          <a href="https://www.linkedin.com/in/uttkarsh-chambiyal/" target="_blank" rel="noopener noreferrer" class="callout-socials-card-w">
-            <div class="callout-socials-card-bg" style="background-image:linear-gradient(180deg, rgba(4,20,45,0.02) 35%, rgba(4,20,45,0.76) 100%), url('/social-cards/linkedin-professional-network.png');"></div>
-            <div class="callout-socials-card-content">
-              <div class="callout-socials-card-label">LinkedIn</div>
-              <div class="callout-socials-card-title">Professional Network</div>
-            </div>
-          </a>
-          <a href="https://x.com/uttkarshx26" target="_blank" rel="noopener noreferrer" class="callout-socials-card-w">
-            <div class="callout-socials-card-bg" style="background-image:linear-gradient(180deg, rgba(5,8,12,0.02) 35%, rgba(5,8,12,0.76) 100%), url('/social-cards/x-thoughts-and-updates.png');"></div>
-            <div class="callout-socials-card-content">
-              <div class="callout-socials-card-label">X / Twitter</div>
-              <div class="callout-socials-card-title">Thoughts & Updates</div>
-            </div>
-          </a>
-          <a href="mailto:uttkarshchambiyal26@gmail.com" class="callout-socials-card-w">
-            <div class="callout-socials-card-bg" style="background-image:linear-gradient(180deg, rgba(10,12,8,0.02) 35%, rgba(10,12,8,0.76) 100%), url('/social-cards/email-collaboration.png');"></div>
-            <div class="callout-socials-card-content">
-              <div class="callout-socials-card-label">Email</div>
-              <div class="callout-socials-card-title">Let's Collaborate</div>
-            </div>
-          </a>
+
+      <div class="container">
+        <p class="caption numbers-cap">On GitHub</p>
+        <ul class="numbers">
+          <li><span class="numbers-num" data-count="38" data-gh="repos">38</span><span class="caption">Public repositories</span></li>
+          <li><span class="numbers-num" data-count="14" data-gh="deploys">14</span><span class="caption">Live deployments</span></li>
+          <li><span class="numbers-num" data-count="35" data-gh="followers">35</span><span class="caption">GitHub followers</span></li>
+          <li><span class="numbers-num" data-count="26" data-gh="stars">26</span><span class="caption">Stars earned</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= STACK ================= -->
+    <section class="stack" id="stack" data-theme="paper">
+      <div class="container stack-head">
+        <h2 class="title"><span class="title-sans">Tools</span><span class="title-serif">&amp; tech</span></h2>
+        <span class="stack-script" aria-hidden="true">Stack</span>
+        <p class="section-intro" data-hl>The languages, frameworks and tools I reach for, from the first commit to the last deploy.</p>
+      </div>
+      <div class="logo-rows" aria-label="Tech stack">
+        <div class="logo-row" data-marquee="1"><span class="tech"><img src="/logos/react.svg" alt="" width="30" height="30" loading="lazy" /><b>React</b></span><span class="tech"><img src="/logos/nextdotjs.svg" alt="" width="30" height="30" loading="lazy" /><b>Next.js</b></span><span class="tech"><img src="/logos/typescript.svg" alt="" width="30" height="30" loading="lazy" /><b>TypeScript</b></span><span class="tech"><img src="/logos/javascript.svg" alt="" width="30" height="30" loading="lazy" /><b>JavaScript</b></span><span class="tech"><img src="/logos/nodedotjs.svg" alt="" width="30" height="30" loading="lazy" /><b>Node.js</b></span><span class="tech"><img src="/logos/tailwindcss.svg" alt="" width="30" height="30" loading="lazy" /><b>Tailwind</b></span><span class="tech"><img src="/logos/threedotjs.svg" alt="" width="30" height="30" loading="lazy" /><b>Three.js</b></span><span class="tech"><img src="/logos/greensock.svg" alt="" width="30" height="30" loading="lazy" /><b>GSAP</b></span><span class="tech"><img src="/logos/express.svg" alt="" width="30" height="30" loading="lazy" /><b>Express</b></span><span class="tech"><img src="/logos/mongodb.svg" alt="" width="30" height="30" loading="lazy" /><b>MongoDB</b></span><span class="tech"><img src="/logos/react.svg" alt="" width="30" height="30" loading="lazy" /><b>React</b></span><span class="tech"><img src="/logos/nextdotjs.svg" alt="" width="30" height="30" loading="lazy" /><b>Next.js</b></span><span class="tech"><img src="/logos/typescript.svg" alt="" width="30" height="30" loading="lazy" /><b>TypeScript</b></span><span class="tech"><img src="/logos/javascript.svg" alt="" width="30" height="30" loading="lazy" /><b>JavaScript</b></span><span class="tech"><img src="/logos/nodedotjs.svg" alt="" width="30" height="30" loading="lazy" /><b>Node.js</b></span><span class="tech"><img src="/logos/tailwindcss.svg" alt="" width="30" height="30" loading="lazy" /><b>Tailwind</b></span><span class="tech"><img src="/logos/threedotjs.svg" alt="" width="30" height="30" loading="lazy" /><b>Three.js</b></span><span class="tech"><img src="/logos/greensock.svg" alt="" width="30" height="30" loading="lazy" /><b>GSAP</b></span><span class="tech"><img src="/logos/express.svg" alt="" width="30" height="30" loading="lazy" /><b>Express</b></span><span class="tech"><img src="/logos/mongodb.svg" alt="" width="30" height="30" loading="lazy" /><b>MongoDB</b></span></div>
+        <div class="logo-row" data-marquee="-1"><span class="tech"><img src="/logos/cplusplus.svg" alt="" width="30" height="30" loading="lazy" /><b>C++</b></span><span class="tech"><img src="/logos/c.svg" alt="" width="30" height="30" loading="lazy" /><b>C</b></span><span class="tech"><img src="/logos/python.svg" alt="" width="30" height="30" loading="lazy" /><b>Python</b></span><span class="tech"><img src="/logos/openjdk.svg" alt="" width="30" height="30" loading="lazy" /><b>Java</b></span><span class="tech"><img src="/logos/swift.svg" alt="" width="30" height="30" loading="lazy" /><b>Swift</b></span><span class="tech"><img src="/logos/git.svg" alt="" width="30" height="30" loading="lazy" /><b>Git</b></span><span class="tech"><img src="/logos/figma.svg" alt="" width="30" height="30" loading="lazy" /><b>Figma</b></span><span class="tech"><img src="/logos/vite.svg" alt="" width="30" height="30" loading="lazy" /><b>Vite</b></span><span class="tech"><img src="/logos/vercel.svg" alt="" width="30" height="30" loading="lazy" /><b>Vercel</b></span><span class="tech"><img src="/logos/netlify.svg" alt="" width="30" height="30" loading="lazy" /><b>Netlify</b></span><span class="tech"><img src="/logos/amazonwebservices.svg" alt="" width="30" height="30" loading="lazy" /><b>AWS</b></span><span class="tech"><img src="/logos/cplusplus.svg" alt="" width="30" height="30" loading="lazy" /><b>C++</b></span><span class="tech"><img src="/logos/c.svg" alt="" width="30" height="30" loading="lazy" /><b>C</b></span><span class="tech"><img src="/logos/python.svg" alt="" width="30" height="30" loading="lazy" /><b>Python</b></span><span class="tech"><img src="/logos/openjdk.svg" alt="" width="30" height="30" loading="lazy" /><b>Java</b></span><span class="tech"><img src="/logos/swift.svg" alt="" width="30" height="30" loading="lazy" /><b>Swift</b></span><span class="tech"><img src="/logos/git.svg" alt="" width="30" height="30" loading="lazy" /><b>Git</b></span><span class="tech"><img src="/logos/figma.svg" alt="" width="30" height="30" loading="lazy" /><b>Figma</b></span><span class="tech"><img src="/logos/vite.svg" alt="" width="30" height="30" loading="lazy" /><b>Vite</b></span><span class="tech"><img src="/logos/vercel.svg" alt="" width="30" height="30" loading="lazy" /><b>Vercel</b></span><span class="tech"><img src="/logos/netlify.svg" alt="" width="30" height="30" loading="lazy" /><b>Netlify</b></span><span class="tech"><img src="/logos/amazonwebservices.svg" alt="" width="30" height="30" loading="lazy" /><b>AWS</b></span></div>
+      </div>
+    </section>
+
+    <!-- ================= HIRE — copy left, collage right ================= -->
+    <section class="hire" id="hire" data-theme="paper">
+      <div class="container hire-grid">
+        <div class="hire-copy">
+          <p class="caption hire-cap"><span class="dot dot-dark"></span>Currently looking for</p>
+          <h2 class="title hire-title"><span class="title-sans">Internships</span><span class="title-sans">that ship</span><span class="title-serif">real products</span></h2>
+          <p class="hire-text" data-hl>Frontend or software engineering roles where I can learn from a real team and ship work people actually use.</p>
+          <div class="hire-actions">
+            <a href="mailto:uttkarshchambiyal26@gmail.com?subject=Internship%20opportunity" class="btn-lime"><span>Email me</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3v6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <a href="https://www.linkedin.com/in/uttkarsh-chambiyal/" target="_blank" rel="noopener" class="btn-outline"><span>LinkedIn</span></a>
+            <a href="/resume.pdf" target="_blank" rel="noopener" class="btn-outline" data-resume hidden><span>Résumé (PDF)</span></a>
+          </div>
+        </div>
+        <div class="hire-collage">
+          <div class="hcard hcard-1"><span class="hcard-no">01</span><p class="caption">Roles</p><p class="hcard-body">Frontend intern<br>Software engineering intern<br>Open-source contributor</p></div>
+          <div class="hcard hcard-2"><span class="hcard-no">02</span><p class="caption">Availability</p><p class="hcard-body">Part-time during semesters<br>Full-time in breaks</p></div>
+          <div class="hcard hcard-3"><span class="hcard-no">03</span><p class="caption">Where</p><p class="hcard-body">Bengaluru, on-site<br>or remote anywhere</p></div>
+          <span class="hire-stamp" aria-hidden="true">2026</span>
         </div>
       </div>
     </section>
 
+    <!-- ================= CONNECT — a fanned hand of cards ================= -->
+    <section class="connect" data-theme="paper">
+      <div class="container">
+        <span class="connect-icon" aria-hidden="true">@</span>
+        <h2 class="title connect-title"><span class="title-sans">Find me</span><span class="title-serif">online</span></h2>
+        <ul class="fan">
+          <li class="fan-item"><a class="fcard fcard-gh" href="https://github.com/Uttkarshchambiyal" target="_blank" rel="noopener">
+            <span class="fcard-top"><span class="caption">GitHub</span><span class="fcard-go" aria-hidden="true">↗</span></span>
+            <span class="fcard-logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></span>
+            <span class="fcard-bottom"><b>@Uttkarshchambiyal</b><span class="caption">Code, every day</span></span>
+          </a></li>
+          <li class="fan-item"><a class="fcard fcard-li" href="https://www.linkedin.com/in/uttkarsh-chambiyal/" target="_blank" rel="noopener">
+            <span class="fcard-top"><span class="caption">LinkedIn</span><span class="fcard-go" aria-hidden="true">↗</span></span>
+            <span class="fcard-logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.125 2.062 2.062 0 0 1 0 4.125zM7.119 20.452H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></span>
+            <span class="fcard-bottom"><b>uttkarsh-chambiyal</b><span class="caption">Updates &amp; posts</span></span>
+          </a></li>
+          <li class="fan-item"><a class="fcard fcard-x" href="https://x.com/uttkarshx26" target="_blank" rel="noopener">
+            <span class="fcard-top"><span class="caption">X / Twitter</span><span class="fcard-go" aria-hidden="true">↗</span></span>
+            <span class="fcard-logo"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></span>
+            <span class="fcard-bottom"><b>@uttkarshx26</b><span class="caption">Thoughts, in public</span></span>
+          </a></li>
+          <li class="fan-item"><a class="fcard fcard-mail" href="mailto:uttkarshchambiyal26@gmail.com">
+            <span class="fcard-top"><span class="caption">Email</span><span class="fcard-go" aria-hidden="true">↗</span></span>
+            <span class="fcard-logo"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="4.5" width="20" height="15" rx="2.5" stroke="currentColor" stroke-width="2"/><path d="M3 6.5l9 7 9-7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+            <span class="fcard-bottom"><b>Say hello</b><span class="caption">I reply to everything</span></span>
+          </a></li>
+        </ul>
+        <p class="connect-sub">Follow along while I build</p>
+        <div class="connect-links">
+          <a href="https://github.com/Uttkarshchambiyal" target="_blank" rel="noopener">GitHub</a>
+          <a href="https://www.linkedin.com/in/uttkarsh-chambiyal/" target="_blank" rel="noopener">LinkedIn</a>
+          <a href="https://x.com/uttkarshx26" target="_blank" rel="noopener">X</a>
+          <a href="mailto:uttkarshchambiyal26@gmail.com">Email</a>
+        </div>
+      </div>
+    </section>
   </main>
 
-
-  <!-- ==========================================
-       FOOTER — LANDO NORRIS STYLE
-       ========================================== -->
-  <footer class="footer-ln" id="footer">
-
-    <!-- Animated glow orb background -->
-    <div class="footer-ln-glow"></div>
-
-    <!-- Footer content area -->
-    <div class="footer-ln-content">
-
-      <!-- Hero statement -->
-      <div class="footer-ln-hero-text">
-        ALWAYS <em>BUILDING</em><br>
-        THE <em>CODE.</em>
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer" id="contact">
+    <svg class="footer-tab" viewBox="0 0 320 44" preserveAspectRatio="none" aria-hidden="true"><path d="M0 44 C 34 44, 40 0, 84 0 H 236 C 280 0, 286 44, 320 44 Z"/></svg>
+    <div class="footer-card">
+      <div class="footer-statement">
+        <h2 class="footer-title"><span class="ln"><span class="title-sans">Always</span> <span class="title-serif">building</span></span><span class="ln"><span class="title-sans">the next</span> <span class="title-serif">thing</span><span class="title-sans">.</span></span></h2>
       </div>
 
-      <!-- Navigation & CTA -->
-      <div class="footer-ln-nav">
-        <div class="footer-ln-nav-col footer-ln-nav-left">
-          <div class="footer-ln-nav-label">Pages</div>
-          <a href="#hero" class="footer-ln-nav-link">Home</a>
-          <a href="#career" class="footer-ln-nav-link">Career</a>
-          <a href="#projects" class="footer-ln-nav-link">Projects</a>
-          <a href="#experience" class="footer-ln-nav-link">Journey</a>
-          <a href="mailto:uttkarshchambiyal26@gmail.com" class="footer-ln-nav-link footer-ln-accent">Hire Me</a>
-        </div>
-
-        <!-- CTA button in middle -->
-        <div class="footer-ln-cta">
-          <a data-theme="lime" href="mailto:uttkarshchambiyal26@gmail.com" class="btn-w">
-            <span>Business Enquiries</span>
-            <div class="btn-icon-w">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M4 12L12 4M12 4H5M12 4v7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg>
-            </div>
-          </a>
-        </div>
-
-        <div class="footer-ln-nav-col footer-ln-nav-right">
-          <div class="footer-ln-nav-label">Follow On</div>
-          <a href="https://github.com/Uttkarshchambiyal" target="_blank" rel="noopener noreferrer" class="footer-ln-nav-link">GitHub</a>
-          <a href="https://www.linkedin.com/in/uttkarsh-chambiyal/" target="_blank" rel="noopener noreferrer" class="footer-ln-nav-link">LinkedIn</a>
-          <a href="https://x.com/uttkarshx26" target="_blank" rel="noopener noreferrer" class="footer-ln-nav-link">X / Twitter</a>
-        </div>
+      <div class="footer-col footer-left">
+        <p class="caption">Pages</p>
+        <a href="#journey" data-scroll-to>Journey</a>
+        <a href="#work" data-scroll-to>Work</a>
+        <a href="#practice" data-scroll-to>Practice</a>
+        <a href="#stack" data-scroll-to>Stack</a>
+      </div>
+      <a href="mailto:uttkarshchambiyal26@gmail.com" class="btn-lime footer-cta"><span>Get in touch</span><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L11 3M11 3H4.5M11 3v6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <div class="footer-col footer-right">
+        <p class="caption">Follow on</p>
+        <a href="https://github.com/Uttkarshchambiyal" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/uttkarsh-chambiyal/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://x.com/uttkarshx26" target="_blank" rel="noopener">X / Twitter</a>
       </div>
 
+      <div class="footer-word" aria-hidden="true">UTTKARSH</div>
     </div>
-
-    <!-- Marquee -->
-    <div class="footer-ln-marquee">
-      <div class="footer-marquee-track">
-        <div class="footer-marquee-item">CHAMBIYAL</div>
-        <div class="footer-marquee-item">CHAMBIYAL</div>
-        <div class="footer-marquee-item">CHAMBIYAL</div>
-        <div class="footer-marquee-item">CHAMBIYAL</div>
-        <div class="footer-marquee-item">CHAMBIYAL</div>
-        <div class="footer-marquee-item">CHAMBIYAL</div>
-      </div>
+    <div class="footer-bottom">
+      <span>© 2026 <b>Uttkarsh Chambiyal</b>. All rights reserved.</span>
+      <span>Bengaluru, India · <span data-clock>--:--</span> IST</span>
     </div>
-
-    <!-- Copyright bar -->
-    <div class="footer-ln-bottom">
-      <div class="footer-ln-copyright">© 2026 <strong>Uttkarsh Chambiyal.</strong> All rights reserved.</div>
-      <div class="footer-ln-bottom-links">
-        <button class="footer-back-top" id="backToTop">Back to top ↑</button>
-      </div>
-    </div>
-
   </footer>
-
 </body>
 
 </html>

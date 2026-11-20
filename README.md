@@ -1,115 +1,70 @@
 <div align="center">
 
-# ⚡ Uttkarsh Chambiyal — Portfolio
+# Uttkarsh Chambiyal — Portfolio
 
-### Frontend experiences built with motion, depth, and a little neon energy.
+### Frontend developer · B.Tech CSE student · Bengaluru
 
-[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES_Modules-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111)](https://developer.mozilla.org/docs/Web/JavaScript)
-[![Three.js](https://img.shields.io/badge/Three.js-WebGL-000?style=for-the-badge&logo=threedotjs&logoColor=white)](https://threejs.org/)
-[![GSAP](https://img.shields.io/badge/GSAP-Animation-0AE448?style=for-the-badge&logo=greensock&logoColor=111)](https://gsap.com/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vite.dev/)
+[![GSAP](https://img.shields.io/badge/GSAP-ScrollTrigger-0AE448?style=for-the-badge&logo=greensock&logoColor=111)](https://gsap.com/)
+[![WebGL](https://img.shields.io/badge/WebGL-Shaders-990000?style=for-the-badge&logo=webgl&logoColor=white)](https://developer.mozilla.org/docs/Web/API/WebGL_API)
 
-[Explore the code](#-project-structure) · [Run locally](#-run-locally) · [Connect](#-connect)
+[Live site](https://www.uttkarshchambiyal.com/) · [Run locally](#run-locally) · [Edit content](#editing-content)
 
 </div>
 
 ---
 
-## ✦ About
+## What's on the page
 
-This is my personal portfolio: a responsive, animation-rich web experience that introduces who I am, highlights the technologies I am learning, and presents selected projects from my frontend and problem-solving journey.
-
-I am a B.Tech Computer Science & Engineering student in Bengaluru, focused on frontend development, DSA, the MERN stack, and building polished interfaces that feel alive.
-
-## 🚀 Highlights
-
-- Cinematic page loader and section reveals
-- Smooth momentum scrolling with scroll-linked motion
-- Three.js WebGL particle field and interactive hero scene
-- Animated typography, counters, accordions, and marquees
-- Project gallery with real preview images and responsive overlays
-- Magnetic buttons, cursor glow, hover interactions, and parallax effects
-- Responsive navigation and layouts across desktop, tablet, and mobile
-- Accessible labels, metadata, social previews, and keyboard-friendly controls
-
-## 🧰 Tech stack
-
-| Layer | Tools |
+| Section | What it does |
 | --- | --- |
-| Core | HTML5, CSS3, JavaScript ES Modules |
-| Build | Vite |
-| Motion | GSAP, ScrollTrigger, ScrollToPlugin, Lenis, SplitType |
-| Visuals | Three.js, Canvas, Rive runtime |
-| Deployment-ready output | Vite production build in `dist/` |
+| **Hero** | A light hero: my name runs huge behind a centred portrait with a soft lime glow, over faint contour lines, with a small notched card and a short intro. The cursor opens a lens that redraws the face as a moving lime contour map. On scroll it pins, the page turns olive, the photo shrinks into a framed portrait and a hand-drawn signature writes across it. |
+| **Statement** | A centred statement whose words light up as you read. |
+| **Journey** | The section pins and slides sideways through milestone tiles and quotes; the surface fades from olive to paper on the way. |
+| **Build / Solve** | Two big doors into the page, with lime swooshes and giant braces sliding in from the edges. |
+| **Selected work** | The six projects pinned on GitHub in a staggered card grid with notched labels; the columns drift at different speeds. |
+| **Problems solved** | A rolling odometer and a "solution matrix": one square per problem solved, counted live from the LeetCode, HackerRank, Codeforces and DSA repos. |
+| **Tools & tech** | A brush-script word writes itself over the title, with two rows of logos sliding in opposite directions. |
+| **Hire** | What I'm looking for, next to a loose collage of cards. |
+| **Find me online** | GitHub, LinkedIn, X and email as a hand of cards that fans out. |
+| **Footer** | Lime-framed card with a raised tab, the statement and quick links. |
 
-## 🛠 Run locally
+Every big title is uncovered by a sweeping block of colour, the background fades between olive, night and paper, and scrolling is smoothed with Lenis. Visitors with *reduced motion* enabled get a static version.
 
-You will need [Node.js](https://nodejs.org/) 18 or newer.
+## Tech
+
+- **Vite** for dev server and production build
+- **GSAP + ScrollTrigger** for every animation
+- **Lenis** for smooth scrolling
+- **Raw WebGL** fragment shaders for the contour-line backgrounds (no 3D library)
+- **GitHub REST API** for live numbers (cached for an hour per visitor)
+
+## Run locally
 
 ```bash
-git clone https://github.com/Uttkarshchambiyal/portfolio-Main-.git
-cd portfolio-Main-
 npm install
-npm run dev
+npm run dev        # http://localhost:5173
+npm run build      # production build in dist/
+npm run preview    # serve the production build
 ```
 
-Open the local URL printed by Vite, usually `http://localhost:5173`.
+## Editing content
 
-Create a production build:
+| To change | Edit |
+| --- | --- |
+| Text, projects, journey, links | `index.html` |
+| Colours, fonts, spacing | the variables at the top of `styles.css` |
+| Animations | `script.js` (each section has its own commented block) |
+| Project screenshots | `public/project-previews/*.webp` (1600×1000) |
+| Tech logos | `public/logos/*.svg` ([Simple Icons](https://simpleicons.org/), CC0) |
+| Link-preview image | `public/og-image.jpg` (1200×630) |
 
-```bash
-npm run build
-```
+**Résumé:** drop a file at `public/resume.pdf` and a "Résumé (PDF)" button appears in the hire section automatically.
 
-Preview that build locally:
+## Deploy
 
-```bash
-npm run preview
-```
+Any static host works. On Vercel or Netlify use build command `npm run build` and output directory `dist`.
 
-## 📁 Project structure
+## Connect
 
-```text
-portfolio-Main-/
-├── index.html               # Page content, sections, and SEO metadata
-├── styles.css               # Responsive design and visual system
-├── script.js                # Animation and interaction logic
-├── public/
-│   ├── project-previews/    # Featured-project screenshots
-│   ├── social-cards/        # Contact and social artwork
-│   └── favicon.*            # Brand icons
-├── dist/                    # Production build
-├── package.json
-└── README.md
-```
-
-## 🌟 Featured work
-
-The portfolio currently showcases:
-
-- Python Mastery Tracker
-- AI Study Buddy
-- PW 2-Hour Hackathon
-- IBM Chat UI
-- The Team Agency
-- Tailwind Projects
-
-Each project card links to its live demo or source repository.
-
-## 🤝 Connect
-
-<div align="center">
-
-[![GitHub](https://img.shields.io/badge/GitHub-Uttkarshchambiyal-181717?style=for-the-badge&logo=github)](https://github.com/Uttkarshchambiyal)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Uttkarsh_Chambiyal-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/uttkarsh-chambiyal/)
-[![Email](https://img.shields.io/badge/Email-Let's_build-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:uttkarshchambiyal26@gmail.com)
-
-If you like the project, consider leaving a ⭐ — it helps more people discover the work.
-
-</div>
-
----
-
-<div align="center">
-  Built with curiosity, code, and caffeine by <strong>Uttkarsh Chambiyal</strong>.
-</div>
+[GitHub](https://github.com/Uttkarshchambiyal) · [LinkedIn](https://www.linkedin.com/in/uttkarsh-chambiyal/) · [X](https://x.com/uttkarshx26) · [Email](mailto:uttkarshchambiyal26@gmail.com)
