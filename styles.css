@@ -162,7 +162,10 @@ a:hover > .roll > .roll-in, button:hover > .roll > .roll-in { transform: transla
    ========================================================= */
 .hero { --pw: min(128vh, 92vw, 1280px); position: relative; height: 100vh; height: 100svh; min-height: 640px; overflow: hidden; color: var(--ink); }
 .hero-gl { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }
-.scene-frame { position: absolute; inset: 0; z-index: 3; clip-path: inset(0px 0px 0px 0px); background-color: rgba(200, 201, 192, 0); will-change: clip-path; }
+/* the frame shrinks by moving its edges and clips with overflow (not an animated clip-path, which Safari
+   mis-draws around the scaled photo); the inner layer moves the other way so the photo stays put */
+.scene-frame { --ix: 0px; --iy: 0px; position: absolute; inset: var(--iy) var(--ix); z-index: 3; overflow: hidden; background-color: rgba(200, 201, 192, 0); }
+.scene-inner { position: absolute; left: calc(var(--ix) * -1); top: calc(var(--iy) * -1); width: calc(100% + var(--ix) * 2); height: calc(100% + var(--iy) * 2); }
 /* the name sits behind the portrait */
 .hero-name {
   position: absolute; left: 0; right: 0; bottom: calc(var(--pw) * .5576 * .78); z-index: 2; text-align: center; pointer-events: none; overflow: hidden; padding-top: .04em;
@@ -179,8 +182,13 @@ a:hover > .roll > .roll-in, button:hover > .roll > .roll-in { transform: transla
 }
 .hero-photo img { position: relative; width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
 .hp-media { position: relative; will-change: transform; }
-.hp-fx { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+.hp-fx { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; transition: opacity .4s; }
 .hero-photo.has-fx .hp-base { opacity: 0; }
+/* in the scroll scene the plain image takes over from the WebGL canvas: it looks the same there and
+   every browser draws an <img> reliably inside the scaled, clipped frame */
+.hp-base { transition: opacity .4s; }
+.hero[data-theme="olive"] .hero-photo.has-fx .hp-base { opacity: 1; }
+.hero[data-theme="olive"] .hp-fx { opacity: 0; }
 
 /* notched card */
 .hero-card { position: absolute; z-index: 5; left: var(--gutter); bottom: var(--gutter); width: 112px; height: 212px; display: flex; flex-direction: column; align-items: center; padding: 34px 10px 12px; text-align: center; color: var(--ink); }

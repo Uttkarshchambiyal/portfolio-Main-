@@ -477,7 +477,7 @@ function heroScene() {
     .to('.hero-name', { yPercent: -60, opacity: 0, duration: .3 }, 0)
     .to('.hero-gl', { opacity: 0, duration: .3 }, .05)
     .to(frame, {
-      clipPath: () => { const s = size(); return `inset(${s.y}px ${s.x}px ${s.y}px ${s.x}px)`; },
+      '--ix': () => `${size().x}px`, '--iy': () => `${size().y}px`,
       backgroundColor: 'rgba(200, 201, 192, 1)', duration: .45, ease: 'power2.inOut',
     }, .12)
     .to(photo, {
@@ -983,6 +983,7 @@ function initPersonFX() {
   const photo = $('.hero-photo');
   const media = $('.hp-media');
   const img = $('.hp-base');
+  const hero = $('.hero');
   if (!photo || !img) return;
   const canvas = document.createElement('canvas');
   canvas.className = 'hp-fx';
@@ -1017,6 +1018,8 @@ function initPersonFX() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
     media.append(canvas);
     photo.classList.add('has-fx');
+    // if the GPU drops the context, show the plain image again
+    canvas.addEventListener('webglcontextlost', () => photo.classList.remove('has-fx'));
 
     const dpr = Math.min(devicePixelRatio || 1, 2);
     const resize = () => {
@@ -1048,7 +1051,7 @@ function initPersonFX() {
     gsap.ticker.add(() => {
       const now = performance.now();
       const dt = Math.min((now - last) / 1000, .05); last = now;
-      if (!visible) return;
+      if (!visible || gl.isContextLost() || hero.dataset.theme === 'olive') return;
       time += dt;
       mouse.x += (goal.x - mouse.x) * .08; mouse.y += (goal.y - mouse.y) * .08; mouse.hover += ((scrollY < innerHeight * .12 ? goal.hover : 0) - mouse.hover) * .07;
       gl.useProgram(prog);
