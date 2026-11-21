@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "sync:codolio": "node scripts/sync-codolio.mjs",
+    "prebuild": "node scripts/sync-codolio.mjs",
     "build": "vite build",
     "preview": "vite preview"
   },

@@ -20,10 +20,10 @@
 | --- | --- |
 | **Hero** | A light hero: my name runs huge behind a centred portrait with a soft lime glow, over faint contour lines, with a small notched card and a short intro. The cursor opens a lens that redraws the face as a moving lime contour map. On scroll it pins, the page turns olive, the photo shrinks into a framed portrait and a hand-drawn signature writes across it. |
 | **Statement** | A centred statement whose words light up as you read. |
-| **Journey** | The section pins and slides sideways through milestone tiles and quotes; the surface fades from olive to paper on the way. |
+| **Journey** | The section pins and slides sideways from day one and a first C program, through learning in public and building with AI (a "Claude × Codex" lockup, and a git graph where both branch off main and merge back, drawn as you scroll), to Flux, Horizon County and what's next. Giant outlined years drift behind the tiles, and every tile tilts towards the cursor. |
 | **Build / Solve** | Two big doors into the page, with lime swooshes and giant braces sliding in from the edges. |
 | **Selected work** | The six projects pinned on GitHub in a staggered card grid with notched labels; the columns drift at different speeds. |
-| **Problems solved** | A rolling odometer and a "solution matrix": one square per problem solved, counted live from the LeetCode, HackerRank, Codeforces and DSA repos. |
+| **Problems solved** | Live from [Codolio](https://codolio.com/profile/Uttkarshchambiyal): a rolling odometer over a year-long practice calendar that lights up week by week as you scroll, then cards for platforms, difficulty, milestones and topics. |
 | **Tools & tech** | A brush-script word writes itself over the title, with two rows of logos sliding in opposite directions. |
 | **Hire** | What I'm looking for, next to a loose collage of cards. |
 | **Find me online** | GitHub, LinkedIn, X and email as a hand of cards that fans out. |
@@ -37,7 +37,8 @@ Every big title is uncovered by a sweeping block of colour, the background fades
 - **GSAP + ScrollTrigger** for every animation
 - **Lenis** for smooth scrolling
 - **Raw WebGL** fragment shaders for the contour-line backgrounds (no 3D library)
-- **GitHub REST API** for live numbers (cached for an hour per visitor)
+- **GitHub REST API** for live profile numbers (cached for an hour per visitor)
+- **Codolio** public profile for problem-solving stats: read live in the browser (cached for an hour), with a snapshot in `data/codolio.json` that `npm run build` refreshes
 
 ## Run locally
 
@@ -58,6 +59,8 @@ npm run preview    # serve the production build
 | Project screenshots | `public/project-previews/*.webp` (1600×1000) |
 | Tech logos | `public/logos/*.svg` ([Simple Icons](https://simpleicons.org/), CC0) |
 | Link-preview image | `public/og-image.jpg` (1200×630) |
+| Codolio username, topic names | `codolio.js` |
+| Problem-solving snapshot | `npm run sync:codolio` (also runs before every build) |
 
 **Résumé:** add the file at `public/resume.pdf`, then remove the `hidden` attribute from the "Résumé (PDF)" link in the hire section of `index.html`.
 

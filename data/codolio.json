@@ -1,0 +1,318 @@
+{
+  "user": "Uttkarshchambiyal",
+  "total": 261,
+  "platforms": [
+    {
+      "key": "leetcode",
+      "name": "LeetCode",
+      "handle": "uttkarshchambiyal",
+      "solved": 120,
+      "contests": 4,
+      "url": "https://leetcode.com/u/uttkarshchambiyal/"
+    },
+    {
+      "key": "geeksforgeeks",
+      "name": "GeeksforGeeks",
+      "handle": "UttkarshChambiyal",
+      "solved": 86,
+      "contests": 0,
+      "url": "https://www.geeksforgeeks.org/user/UttkarshChambiyal/"
+    },
+    {
+      "key": "codeforces",
+      "name": "Codeforces",
+      "handle": "Uttkarsh26",
+      "solved": 30,
+      "contests": 0,
+      "url": "https://codeforces.com/profile/Uttkarsh26"
+    },
+    {
+      "key": "codechef",
+      "name": "CodeChef",
+      "handle": "uttkarsh26",
+      "solved": 25,
+      "contests": 0,
+      "url": "https://www.codechef.com/users/uttkarsh26"
+    },
+    {
+      "key": "hackerrank",
+      "name": "HackerRank",
+      "handle": "uttkarsh26",
+      "solved": 0,
+      "contests": 0,
+      "url": "https://www.hackerrank.com/profile/uttkarsh26"
+    }
+  ],
+  "difficulty": {
+    "easy": 132,
+    "medium": 38,
+    "hard": 0,
+    "fundamentals": 36,
+    "competitive": 55,
+    "fundamentalsFrom": [
+      "GeeksforGeeks"
+    ],
+    "competitiveFrom": [
+      "CodeChef",
+      "Codeforces"
+    ]
+  },
+  "topics": [
+    [
+      "Arrays",
+      83
+    ],
+    [
+      "Math",
+      61
+    ],
+    [
+      "Strings",
+      46
+    ],
+    [
+      "Hashing",
+      40
+    ],
+    [
+      "Bit manipulation",
+      29
+    ],
+    [
+      "Two pointers",
+      20
+    ],
+    [
+      "Sorting",
+      18
+    ],
+    [
+      "Implementation",
+      15
+    ],
+    [
+      "Recursion",
+      15
+    ],
+    [
+      "Linked lists",
+      13
+    ],
+    [
+      "Greedy",
+      11
+    ],
+    [
+      "Dynamic programming",
+      9
+    ],
+    [
+      "Simulation",
+      9
+    ],
+    [
+      "Binary search",
+      5
+    ],
+    [
+      "Divide & conquer",
+      5
+    ],
+    [
+      "Brute force",
+      4
+    ],
+    [
+      "Enumeration",
+      3
+    ],
+    [
+      "Matrix",
+      3
+    ],
+    [
+      "Number theory",
+      3
+    ],
+    [
+      "Sliding window",
+      3
+    ],
+    [
+      "Prefix sum",
+      2
+    ],
+    [
+      "Searching",
+      2
+    ],
+    [
+      "Stacks & queues",
+      2
+    ],
+    [
+      "Advanced Data Structure",
+      1
+    ],
+    [
+      "Backtracking",
+      1
+    ],
+    [
+      "Brainteaser",
+      1
+    ],
+    [
+      "Factorial",
+      1
+    ],
+    [
+      "Palindrome",
+      1
+    ],
+    [
+      "Pattern printing",
+      1
+    ],
+    [
+      "Quickselect",
+      1
+    ],
+    [
+      "Segment Tree",
+      1
+    ],
+    [
+      "Trie",
+      1
+    ]
+  ],
+  "calendar": {
+    "2025-12-19": 1,
+    "2026-01-14": 1,
+    "2026-01-28": 5,
+    "2026-01-29": 4,
+    "2026-01-30": 1,
+    "2026-01-31": 1,
+    "2026-02-01": 1,
+    "2026-02-17": 3,
+    "2026-03-12": 6,
+    "2026-03-30": 3,
+    "2026-03-31": 1,
+    "2026-04-02": 15,
+    "2026-04-03": 4,
+    "2026-04-04": 13,
+    "2026-04-05": 2,
+    "2026-04-06": 42,
+    "2026-04-07": 4,
+    "2026-04-08": 7,
+    "2026-04-09": 6,
+    "2026-04-10": 5,
+    "2026-04-11": 2,
+    "2026-04-12": 1,
+    "2026-04-22": 5,
+    "2026-04-23": 7,
+    "2026-04-24": 4,
+    "2026-04-25": 7,
+    "2026-04-26": 7,
+    "2026-05-06": 5,
+    "2026-05-07": 10,
+    "2026-05-08": 1,
+    "2026-05-09": 1,
+    "2026-05-10": 4,
+    "2026-05-12": 1,
+    "2026-05-13": 12,
+    "2026-05-14": 1,
+    "2026-05-15": 7,
+    "2026-05-16": 2,
+    "2026-05-17": 8,
+    "2026-05-19": 4,
+    "2026-05-20": 5,
+    "2026-05-21": 1,
+    "2026-05-22": 5,
+    "2026-05-23": 2,
+    "2026-05-25": 1,
+    "2026-05-26": 5,
+    "2026-05-27": 9,
+    "2026-05-28": 2,
+    "2026-05-29": 1,
+    "2026-05-30": 7,
+    "2026-05-31": 10,
+    "2026-06-01": 5,
+    "2026-06-02": 2,
+    "2026-06-04": 7,
+    "2026-06-05": 6,
+    "2026-06-06": 11,
+    "2026-06-07": 3,
+    "2026-06-08": 4,
+    "2026-06-09": 1,
+    "2026-06-12": 1,
+    "2026-06-14": 6,
+    "2026-06-15": 1,
+    "2026-06-16": 1,
+    "2026-06-17": 4,
+    "2026-06-18": 5,
+    "2026-06-28": 3,
+    "2026-06-29": 4,
+    "2026-07-05": 5,
+    "2026-07-08": 3,
+    "2026-07-10": 4,
+    "2026-07-11": 3,
+    "2026-08-24": 7,
+    "2026-10-01": 2,
+    "2026-10-03": 2,
+    "2026-10-04": 2,
+    "2026-10-05": 4,
+    "2026-10-06": 3,
+    "2026-10-07": 1,
+    "2026-10-08": 2,
+    "2026-10-09": 6,
+    "2026-10-10": 2,
+    "2026-10-11": 5,
+    "2026-10-13": 2,
+    "2026-10-14": 2,
+    "2026-10-15": 4,
+    "2026-10-16": 3,
+    "2026-11-03": 4,
+    "2026-11-04": 4,
+    "2026-11-05": 3,
+    "2026-11-07": 2,
+    "2026-11-08": 1,
+    "2026-11-09": 2,
+    "2026-11-10": 3,
+    "2026-11-11": 1,
+    "2026-11-12": 1,
+    "2026-11-13": 1,
+    "2026-11-14": 1,
+    "2026-11-15": 3,
+    "2026-11-16": 5,
+    "2026-11-17": 3,
+    "2026-11-18": 1,
+    "2026-11-19": 1,
+    "2026-11-20": 6
+  },
+  "activeDays": 102,
+  "submissions": 430,
+  "maxStreak": 14,
+  "firstDay": "2025-12-19",
+  "contests": 4,
+  "contestsOn": [
+    "LeetCode"
+  ],
+  "badges": [
+    {
+      "name": "50 Days Badge 2026",
+      "platform": "LeetCode"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "CSS (Basic)",
+      "platform": "HackerRank"
+    }
+  ],
+  "languages": [
+    "C++",
+    "C"
+  ]
+}

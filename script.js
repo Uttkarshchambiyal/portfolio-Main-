@@ -7,6 +7,8 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import snapshot from './data/codolio.json';
+import { CODOLIO_API, summarize } from './codolio.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -25,7 +27,7 @@ let lenis = null;
 document.addEventListener('DOMContentLoaded', () => {
   mountSignatures();
   splitStatement();
-  buildPractice();
+  bootPractice();
   buildGraph();
   initClock();
   initLenis();
@@ -38,13 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
   loadLiveNumbers();
 
   const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
-  runLoader(fonts).then(() => {
+  let hero = null;
+  const prepare = () => {
     document.body.classList.remove('is-loading');
-    lenis?.start();
-    intro();
+    hero = intro(true);
     initScroll();
     ScrollTrigger.refresh();
-  });
+  };
+  runLoader(fonts, prepare, () => hero?.play()).then(() => lenis?.start());
   window.addEventListener('load', () => ScrollTrigger.refresh());
 });
 
@@ -180,23 +183,55 @@ function fadeUp(sel, stagger = 0) {
 /* =========================================================
    LOADER + INTRO
    ========================================================= */
-function runLoader(fonts) {
+// prepare: the heavy page setup (scroll scenes, layout refresh). It runs while the
+// logo is holding still, so any stall is invisible, and the exit then plays smoothly.
+// reveal: called as the sheet starts lifting, to start the hero's own entrance.
+function runLoader(fonts, prepare, reveal) {
   const loader = $('.loader');
-  if (!loader || REDUCED) { loader?.remove(); return Promise.resolve(); }
+  const frames = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  if (!loader || REDUCED) {
+    loader?.remove();
+    return Promise.resolve(fonts).then(() => { prepare(); reveal(); });
+  }
+  // never hold the screen hostage to a slow font server
+  const fontsOrTimeout = Promise.race([fonts, new Promise((r) => setTimeout(r, 1200))]);
   return new Promise((resolve) => {
-    const sig = drawSignature($('.loader-sig'), { duration: 1.5, delay: .2 });
-    Promise.all([fonts, new Promise((r) => sig.eventCallback('onComplete', r))]).then(() => {
-      gsap.timeline({ onComplete: () => loader.remove() })
-        .to('.loader-sig', { y: -30, opacity: 0, duration: .5, ease: 'power2.in' }, .15)
-        .to(loader, { yPercent: -100, duration: 1, ease: 'expo.inOut' }, .3)
-        .add(resolve, .7);
-    });
+    const tile = $('.loader-tile');
+    // start: on the lime screen, U and C rise cleanly into place
+    const build = gsap.timeline({ delay: .1 })
+      .from('.loader-cap span', { yPercent: 110, duration: .5, ease: 'expo.out' }, 0)
+      .from('.loader-uc span', { yPercent: 115, duration: .7, ease: 'expo.out', stagger: .07 }, .05)
+      .to({}, { duration: .1 });
+    Promise.all([fontsOrTimeout, new Promise((r) => build.eventCallback('onComplete', r))])
+      .then(() => { prepare(); return frames(); })
+      .then(() => {
+        // end: the letters drop away while an olive tile spins up from nothing and floods
+        // the screen, then that olive sheet lifts off the page. The growth is eased in log
+        // space so it reads as one steady acceleration.
+        const flood = Math.hypot(innerWidth, innerHeight) / tile.offsetWidth * 1.5;
+        const z = { p: 0 };
+        // the tile is drawn big (75vmax) and starts scaled down to ~6px, so it is
+        // rasterised sharp and never stretched up into a blurry edge
+        const from = 6 / tile.offsetWidth;
+        gsap.timeline({ onComplete: () => { loader.remove(); resolve(); } })
+          .to('.loader-cap span', { yPercent: 110, duration: .3, ease: 'power3.in' }, 0)
+          .to('.loader-uc span', { yPercent: -115, duration: .3, ease: 'power3.in', stagger: .04 }, 0)
+          .fromTo(tile, { rotation: -90 }, {
+            rotation: 90, duration: .7, ease: 'power2.in',
+            onStart: () => gsap.set(tile, { scale: from }),
+          }, .12)
+          .to(z, { p: 1, duration: .7, ease: 'power2.in', onUpdate: () => gsap.set(tile, { scale: from * (flood / from) ** z.p }) }, .12)
+          .set(loader, { backgroundColor: 'var(--olive)' })
+          .set(tile, { autoAlpha: 0 })
+          .add(reveal)
+          .to(loader, { yPercent: -100, duration: .75, ease: 'expo.inOut' });
+      });
   });
 }
 
-function intro() {
-  if (REDUCED) return;
-  gsap.timeline({ defaults: { ease: 'expo.out' } })
+function intro(paused = false) {
+  if (REDUCED) return null;
+  return gsap.timeline({ paused, defaults: { ease: 'expo.out' } })
     .from('.hp-media', { yPercent: 14, opacity: 0, duration: 1.9 }, .1)
     .from('.hero-card', { y: 40, opacity: 0, duration: 1.2 }, .75)
     .from('.hero-card-outline path', { strokeDasharray: '0 1200', duration: 1.6, ease: 'power2.inOut' }, .8)
@@ -349,6 +384,7 @@ function initScroll() {
   if (REDUCED) {
     $$('.statement .w').forEach((w) => w.classList.add('on'));
     renderPractice(1);
+    $$('.ps-card').forEach(revealCard);
     return;
   }
 
@@ -398,10 +434,9 @@ function initScroll() {
   // Practice
   mm.add(DESKTOP, () => practiceScroll(true));
   mm.add(MOBILE, () => practiceScroll(false));
-  practiceHover();
-  fadeUp('.practice-cap');
-  gsap.from('.plegend li', { x: -40, opacity: 0, duration: 1.1, stagger: .07, ease: 'expo.out', scrollTrigger: { trigger: '.plegend', start: 'top 90%' } });
-  gsap.from('.matrix-wrap', { y: 60, opacity: 0, rotateX: 18, transformPerspective: 1200, duration: 1.5, ease: 'expo.out', scrollTrigger: { trigger: '.matrix-wrap', start: 'top 92%' } });
+  fadeUp('.practice-cap, .practice-aside', .08);
+  gsap.from('.heat-card', { y: 70, opacity: 0, rotateX: 14, transformPerspective: 1400, duration: 1.5, ease: 'expo.out', scrollTrigger: { trigger: '.heat-card', start: 'top 96%' } });
+  practiceCards();
   gsap.from('.numbers li', { y: 40, opacity: 0, duration: 1.2, stagger: .08, ease: 'expo.out', scrollTrigger: { trigger: '.numbers', start: 'top 90%' } });
   fadeUp('.numbers-cap');
 
@@ -571,8 +606,64 @@ function journeyScroll() {
     });
   }
   // a light parallax inside the tiles
-  $$('.tile-day-no, .tile-stat-num', track).forEach((el) => {
+  $$('.tile-day-no, .tile-stat-num, .duo-name', track).forEach((el) => {
     gsap.fromTo(el, { xPercent: 12 }, { xPercent: -6, ease: 'none', scrollTrigger: { trigger: el, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
+  });
+  // the giant years drift slower than the tiles, so they sit deep behind them
+  $$('.hz-year', track).forEach((y) => {
+    gsap.fromTo(y, { xPercent: 18 }, { xPercent: -42, ease: 'none', scrollTrigger: { trigger: y.parentElement, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
+  });
+  // Claude × Codex: the names roll up out of their lines, the marks pop in
+  const duo = $('.tile-duo', track);
+  if (duo) {
+    gsap.timeline({ scrollTrigger: { trigger: duo, containerAnimation: tween, start: 'left 80%' } })
+      .from($$('.duo-line > span', duo), { yPercent: 110, duration: 1.1, ease: 'expo.out', stagger: .12 }, .2)
+      .from($('.duo-x', duo), { rotation: -180, scale: 0, duration: .9, ease: 'back.out(2)' }, .45)
+      .from($$('.duo-marks svg', duo), { scale: 0, rotation: -90, duration: .8, ease: 'back.out(2.2)', stagger: .1 }, .5)
+      .from($('.duo-txt', duo), { opacity: 0, y: 12, duration: .7, ease: 'power3.out' }, .7);
+  }
+  // the git graph is drawn by the scroll: main runs left to right, each AI branch
+  // splits off and merges back, and every commit pops in as the line reaches it
+  const git = $('.git', track);
+  if (git) {
+    const W = 300;
+    const at = (el, k = 'x') => +el.dataset[k] / W;
+    const tl = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: { trigger: git.closest('.tile'), containerAnimation: tween, start: 'left 88%', end: 'right 62%', scrub: .6 },
+    });
+    $$('.git-path', git).forEach((p) => {
+      const from = p.dataset.from ? at(p, 'from') : 0;
+      const to = p.dataset.to ? at(p, 'to') : 1;
+      tl.fromTo(p, { strokeDasharray: '1 1', strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: to - from }, from);
+    });
+    $$('.git-dot, .git-badge, .git-head', git).forEach((el) => {
+      tl.fromTo(el, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: .05, ease: 'back.out(3)' }, Math.max(0, at(el) - .02));
+    });
+    $$('.git-lbl[data-x]', git).forEach((el) => tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: .06 }, at(el)));
+    tl.set({}, {}, 1);
+  }
+
+  tiltTiles();
+}
+
+// Tiles lean towards the pointer, with a soft light following it
+function tiltTiles() {
+  if (!FINE) return;
+  $$('.hz-item .tile').forEach((t) => {
+    gsap.set(t, { transformPerspective: 900 });
+    const rx = gsap.quickTo(t, 'rotationX', { duration: .7, ease: 'power3' });
+    const ry = gsap.quickTo(t, 'rotationY', { duration: .7, ease: 'power3' });
+    t.addEventListener('pointermove', (e) => {
+      const r = t.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      ry((x - .5) * 7);
+      rx((.5 - y) * 7);
+      t.style.setProperty('--mx', `${(x * 100).toFixed(1)}%`);
+      t.style.setProperty('--my', `${(y * 100).toFixed(1)}%`);
+    });
+    t.addEventListener('pointerleave', () => { rx(0); ry(0); });
   });
 }
 
@@ -607,105 +698,377 @@ function fanCards() {
 }
 
 /* =========================================================
-   PRACTICE BOARD — a rolling odometer plus a "solution matrix":
-   one square per solved problem, coloured by platform. One
-   scroll-driven progress value lights the squares in a diagonal
-   wave; the legend counts the lit squares.
+   PRACTICE BOARD — live from Codolio. A rolling odometer over
+   a year of practice: one scroll-driven progress value sweeps
+   the calendar week by week and every counter follows it.
+   Below, cards for platforms, difficulty, milestones, topics.
+   The bundled snapshot paints first; live data replaces it.
    ========================================================= */
-const practice = { p: 0, cells: [], cols: [], keys: [] };
+const practice = { data: null, p: 0, cells: [], cols: [], weeks: 0 };
+const CODOLIO_CACHE = 'codolio-v1';
+const DAY = 864e5;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const PLATFORM_COLORS = ['#d2ff00', '#e6e8d8', '#a9c25a', '#6f7d4c', '#8f927f', '#c9d98a'];
+const DIFF_COLORS = { Easy: '#a9c25a', Medium: '#d2ff00', Hard: '#f3f2ea' };
+const COUNT_WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+const ICONS = {
+  trophy: '<path d="M7 4h10v4a5 5 0 0 1-10 0V4Z M7 6H4v1a3 3 0 0 0 3 3 M17 6h3v1a3 3 0 0 1-3 3 M12 13v4 M8 20h8"/>',
+  badge: '<circle cx="12" cy="9" r="5"/><path d="M9 13.4 8 21l4-2 4 2-1-7.6"/>',
+  cert: '<rect x="3.5" y="4.5" width="17" height="12" rx="1.5"/><path d="M7.5 9h9 M7.5 12h5"/><circle cx="16" cy="17.5" r="2.5"/>',
+  code: '<path d="m8.5 8-4 4 4 4 M15.5 8l4 4-4 4 M13.5 6l-3 12"/>',
+  flag: '<path d="M5.5 21V4 M5.5 4.5h11l-2.2 3.8 2.2 3.7h-11"/>',
+};
 
-function buildPractice() {
-  const matrix = $('.matrix');
+const make = (tag, cls, text) => {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+};
+const counter = (tag, cls, value) => { const n = make(tag, cls, value); n.dataset.num = value; return n; };
+const isoDay = (t) => new Date(t).toISOString().slice(0, 10);
+
+function getJSON(url, ms = 6000) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, { signal: ctrl.signal })
+    .then((r) => (r.ok ? r.json() : null))
+    .catch(() => null)
+    .finally(() => clearTimeout(timer));
+}
+
+function bootPractice() {
+  if (!$('.practice')) return;
+  let data = snapshot;
+  let fresh = false;
+  try {
+    const cached = JSON.parse(localStorage.getItem(CODOLIO_CACHE) || 'null');
+    if (cached?.data?.total > 0 && Date.now() - cached.at < 3600e3) { data = cached.data; fresh = true; }
+  } catch { /* storage blocked */ }
+  setPractice(data);
+  heatTip();
+  if (!fresh) refreshCodolio();
+
+  // the calendar shows as many weeks as fit; rebuild when that changes
+  let timer = 0;
+  addEventListener('resize', () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { if (heatWeeks() !== practice.weeks) { buildHeat(); renderPractice(practice.p); } }, 200);
+  });
+}
+
+async function refreshCodolio() {
+  const json = await getJSON(CODOLIO_API, 8000);
+  const data = json && summarize(json);
+  if (!data) return;
+  try { localStorage.setItem(CODOLIO_CACHE, JSON.stringify({ at: Date.now(), data })); } catch { /* ignore */ }
+  if (JSON.stringify(data) === JSON.stringify(practice.data)) return;
+  setPractice(data);
+  ScrollTrigger.refresh();
+}
+
+function setPractice(data) {
+  practice.data = data;
+  const shown = data.platforms.filter((p) => p.solved > 0);
+  $$('[data-codolio="total"]').forEach((el) => { el.textContent = data.total; });
+  const words = $('[data-codolio="platforms"]');
+  if (words) words.textContent = `${COUNT_WORDS[shown.length] || shown.length} platform${shown.length === 1 ? '' : 's'}`;
+  buildOdo(data.total);
+  buildHeat();
+  renderPlatforms(shown);
+  renderDifficulty(data.difficulty);
+  renderMilestones(data);
+  renderTopics(data.topics);
+  renderPractice(practice.p);
+}
+
+function buildOdo(total) {
   const odo = $('.odo');
-  if (!matrix || !odo) return;
-  practice.keys = $$('.pl').map((pl) => ({ key: pl.dataset.key, color: pl.style.getPropertyValue('--c'), num: $('.pl-num', pl) }));
-
-  const frag = document.createDocumentFragment();
-  const cells = [];
-  practice.keys.forEach(({ key, color, num }) => {
-    for (let i = 0; i < (+num.dataset.value || 0); i++) {
-      const c = document.createElement('span');
-      c.className = 'cell';
-      c.dataset.key = key;
-      c.style.setProperty('--c', color);
-      frag.append(c);
-      cells.push(c);
-    }
-  });
-  matrix.replaceChildren(frag);
-
-  const cols = +getComputedStyle(matrix).getPropertyValue('--cols') || 16;
-  const rows = Math.ceil(cells.length / cols);
-  practice.cells = cells.map((el, i) => {
-    const r = Math.floor(i / cols); const c = i % cols;
-    return { el, key: el.dataset.key, t: ((r + c) / (rows + cols - 2)) * .92 + Math.random() * .06, on: false, hot: false };
-  });
-
-  odo.dataset.value = cells.length;
-  odo.setAttribute('aria-label', `${cells.length} problems solved`);
-  odo.replaceChildren(...[...String(cells.length)].map(() => {
-    const col = document.createElement('span');
-    col.className = 'odo-col';
-    col.innerHTML = Array.from({ length: 10 }, (_, d) => `<span>${d}</span>`).join('');
+  if (!odo) return;
+  odo.setAttribute('aria-label', `${total} problems solved`);
+  const n = String(total).length;
+  if (practice.cols.length === n) return;
+  odo.replaceChildren(...Array.from({ length: n }, () => {
+    const col = make('span', 'odo-col');
+    for (let d = 0; d < 10; d++) col.append(make('span', '', d));
     return col;
   }));
   practice.cols = $$('.odo-col', odo);
-  renderPractice(practice.p);
+}
+
+function heatWeeks() {
+  const w = $('.heat-grid')?.clientWidth || 0;
+  return Math.max(16, Math.min(53, Math.floor(w / 13)));
+}
+
+// One column per week (Monday on top), ending today. Levels are
+// quartiles of the visible days, so a light week still reads.
+function buildHeat() {
+  const grid = $('.heat-grid');
+  const months = $('.heat-months');
+  if (!grid || !practice.data) return;
+  const weeks = heatWeeks();
+  practice.weeks = weeks;
+  const cal = practice.data.calendar || {};
+  const now = new Date();
+  const today = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const start = today - (((new Date(today).getUTCDay() + 6) % 7) + (weeks - 1) * 7) * DAY;
+
+  const seen = [];
+  for (let t = start; t <= today; t += DAY) if (cal[isoDay(t)]) seen.push(cal[isoDay(t)]);
+  seen.sort((a, b) => a - b);
+  const q = (f) => seen[Math.min(seen.length - 1, Math.floor(f * seen.length))] || 0;
+  const cut = [q(.25), q(.5), q(.75)];
+  const level = (c) => (!c ? 0 : c <= cut[0] ? 1 : c <= cut[1] ? 2 : c <= cut[2] ? 3 : 4);
+
+  const frag = document.createDocumentFragment();
+  const cells = [];
+  const span = weeks - 1 + 6 * .3;
+  for (let w = 0; w < weeks; w++) {
+    for (let d = 0; d < 7; d++) {
+      const t = start + (w * 7 + d) * DAY;
+      const el = make('i', 'hc');
+      frag.append(el);
+      if (t > today) { el.classList.add('is-future'); continue; }
+      const c = cal[isoDay(t)] || 0;
+      el.dataset.l = level(c);
+      el.dataset.t = t;
+      el.dataset.c = c;
+      cells.push({ el, c, t: ((w + d * .3) / span) * .94, on: false, hot: false });
+    }
+  }
+  grid.style.setProperty('--weeks', weeks);
+  grid.replaceChildren(frag);
+  practice.cells = cells;
+
+  if (months) {
+    const fmt = new Intl.DateTimeFormat('en-US', { month: 'short', timeZone: 'UTC' });
+    const marks = [];
+    for (let w = 0; w < weeks; w++) {
+      const t = start + w * 7 * DAY;
+      if (w === 0 || new Date(t).getUTCMonth() !== new Date(t - 7 * DAY).getUTCMonth()) marks.push([w, t]);
+    }
+    if (marks.length > 1 && marks[1][0] < 3) marks.shift();
+    months.style.setProperty('--weeks', weeks);
+    months.replaceChildren(...marks.map(([w, t]) => {
+      const s = make('span', '', fmt.format(t));
+      s.style.gridColumnStart = w + 1;
+      return s;
+    }));
+  }
+
+  const range = $('[data-codolio="range"]');
+  if (range) {
+    const m = Math.round(weeks / 4.35);
+    range.textContent = m >= 12 ? 'Last 12 months · every platform' : `Last ${m} months`;
+  }
 }
 
 function renderPractice(p) {
   practice.p = p;
-  const counts = {};
-  let lit = 0;
+  let days = 0; let subs = 0; let allDays = 0; let allSubs = 0;
   practice.cells.forEach((c) => {
-    const on = c.t <= p;
-    const hot = on && p < 1 && p - c.t < .035;
+    const on = p > 0 && c.t <= p;
+    const hot = on && c.c > 0 && p < 1 && p - c.t < .03;
     if (on !== c.on) { c.on = on; c.el.classList.toggle('on', on); }
     if (hot !== c.hot) { c.hot = hot; c.el.classList.toggle('hot', hot); }
-    if (on) { lit++; counts[c.key] = (counts[c.key] || 0) + 1; }
+    if (c.c) { allDays++; allSubs += c.c; if (on) { days++; subs += c.c; } }
   });
-  practice.keys.forEach(({ key, num }) => { num.textContent = counts[key] || 0; });
-  const digits = String(lit).padStart(practice.cols.length, '0');
+  const d = practice.data;
+  if (!d) return;
+  // counters climb with the calendar, so busy months move them faster
+  const fs = allSubs ? subs / allSubs : p;
+  const fd = allDays ? days / allDays : p;
+  setOdo(Math.round(d.total * fs));
+  const put = (k, v) => { const el = $(`[data-heat="${k}"]`); if (el) el.textContent = v; };
+  put('days', Math.round(d.activeDays * fd));
+  put('subs', Math.round(d.submissions * fs));
+  put('streak', Math.round(d.maxStreak * fd));
+}
+
+function setOdo(n) {
+  const digits = String(n).padStart(practice.cols.length, '0');
   const firstReal = digits.search(/[1-9]/);
   practice.cols.forEach((col, i) => {
     col.style.transform = `translateY(${-+digits[i] * 10}%)`;
     col.classList.toggle('is-lead', i < (firstReal < 0 ? digits.length - 1 : firstReal));
   });
-  const count = $('.matrix-count');
-  if (count) count.textContent = `${lit} / ${practice.cells.length}`;
 }
 
 function practiceScroll(pinned) {
   const state = { p: practice.p };
-  const tween = gsap.to(state, {
-    p: 1, ease: 'none', onUpdate: () => renderPractice(state.p),
-    scrollTrigger: pinned
-      ? { trigger: '.practice-pin', start: 'top top', end: '+=120%', pin: true, scrub: .5, anticipatePin: 1 }
-      : { trigger: '.matrix', start: 'top 80%', end: 'bottom 50%', scrub: .5 },
-  });
-  return () => tween.scrollTrigger?.kill();
+  const draw = () => renderPractice(state.p);
+  // Pinned (big screens): the year fills in as you scroll through the pin.
+  // Unpinned (phones, tablets, short windows): the counter and calendar sit on
+  // screen together, so the fill plays once by itself and always lands on the full total.
+  const tween = pinned
+    ? gsap.to(state, {
+      p: 1, ease: 'none', onUpdate: draw,
+      scrollTrigger: { trigger: '.practice-pin', start: 'top top', end: '+=110%', pin: true, scrub: .5, anticipatePin: 1 },
+    })
+    : gsap.to(state, {
+      p: 1, duration: 2.4, ease: 'power2.inOut', onUpdate: draw,
+      scrollTrigger: { trigger: '.heat-card', start: 'top 92%', once: true },
+    });
+  return () => { tween.scrollTrigger?.kill(); tween.kill(); };
 }
 
-function practiceHover() {
-  const matrix = $('.matrix');
-  $$('.pl').forEach((pl) => {
-    pl.addEventListener('pointerenter', () => { matrix.dataset.focus = pl.dataset.key; });
-    pl.addEventListener('pointerleave', () => { delete matrix.dataset.focus; });
+function heatTip() {
+  const grid = $('.heat-grid');
+  const tip = $('.heat-tip');
+  const card = $('.heat-card');
+  if (!grid || !tip || !card || !FINE) return;
+  const fmt = new Intl.DateTimeFormat('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+  grid.addEventListener('pointerover', (e) => {
+    const c = e.target.closest('.hc[data-t]');
+    if (!c) return;
+    const n = +c.dataset.c;
+    tip.replaceChildren(make('b', '', n ? `${n} submission${n === 1 ? '' : 's'}` : 'No submissions'), make('span', '', fmt.format(+c.dataset.t)));
+    const r = c.getBoundingClientRect();
+    const k = card.getBoundingClientRect();
+    const half = tip.offsetWidth / 2 + 12;
+    tip.style.left = `${Math.min(k.width - half, Math.max(half, r.left - k.left + r.width / 2))}px`;
+    tip.style.top = `${r.top - k.top}px`;
+    tip.classList.add('is-on');
+  });
+  grid.addEventListener('pointerleave', () => tip.classList.remove('is-on'));
+}
+
+function renderPlatforms(list) {
+  const bar = $('.split-bar');
+  const ul = $('.plat-list');
+  if (!bar || !ul) return;
+  const total = list.reduce((s, p) => s + p.solved, 0) || 1;
+  const focus = (key) => {
+    bar.classList.toggle('has-focus', !!key);
+    $$('.seg', bar).forEach((s) => s.classList.toggle('is-focus', s.dataset.key === key));
+  };
+  bar.replaceChildren(...list.map((p, i) => {
+    const s = make('span', 'seg');
+    s.dataset.key = p.key;
+    s.style.cssText = `--v:${p.solved};--c:${PLATFORM_COLORS[i % PLATFORM_COLORS.length]};--i:${i}`;
+    return s;
+  }));
+  ul.replaceChildren(...list.map((p, i) => {
+    const a = make('a', 'plat');
+    a.href = p.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.style.setProperty('--c', PLATFORM_COLORS[i % PLATFORM_COLORS.length]);
+    a.setAttribute('aria-label', `${p.name}: ${p.solved} problems solved. Open profile`);
+    const name = make('span', 'plat-name');
+    name.append(make('b', '', p.name));
+    if (p.handle) name.append(make('small', '', `@${p.handle}`));
+    a.append(make('i', 'plat-chip'), name, make('span', 'plat-share', `${Math.round((p.solved / total) * 100)}%`), counter('b', 'plat-num', p.solved), make('span', 'plat-go', '↗'));
+    a.addEventListener('pointerenter', () => focus(p.key));
+    a.addEventListener('pointerleave', () => focus(null));
+    const li = make('li');
+    li.append(a);
+    return li;
+  }));
+}
+
+function renderDifficulty(d) {
+  const segs = [['Easy', d.easy], ['Medium', d.medium], ['Hard', d.hard]].filter(([, v]) => v > 0);
+  const dsa = segs.reduce((s, [, v]) => s + v, 0);
+  const C = 2 * Math.PI * 50;
+  const gap = segs.length > 1 ? 2.4 : 0;
+  let off = 0;
+  $('.donut-segs')?.replaceChildren(...segs.map(([name, v], i) => {
+    const c = document.createElementNS(SVG_NS, 'circle');
+    Object.entries({ cx: 60, cy: 60, r: 50, fill: 'none', 'stroke-width': 11, class: 'donut-seg', 'stroke-dashoffset': (-off).toFixed(2) })
+      .forEach(([k, val]) => c.setAttribute(k, val));
+    c.style.cssText = `--len:${Math.max(.5, (v / dsa) * C - gap).toFixed(2)};--c:${DIFF_COLORS[name]};--i:${i}`;
+    off += (v / dsa) * C;
+    return c;
+  }));
+  const mid = $('.donut-mid b');
+  if (mid) { mid.textContent = dsa; mid.dataset.num = dsa; }
+
+  $('.diff-legend')?.replaceChildren(...segs.map(([name, v]) => {
+    const li = make('li');
+    li.style.setProperty('--c', DIFF_COLORS[name]);
+    li.append(make('i'), make('span', 'diff-name', name), counter('b', 'diff-num', v), make('em', 'diff-pct', `${Math.round((v / dsa) * 100)}%`));
+    return li;
+  }));
+
+  const extra = [
+    ['Fundamentals', d.fundamentals, d.fundamentalsFrom],
+    ['Competitive', d.competitive, d.competitiveFrom],
+  ].filter(([, v]) => v > 0);
+  $('.diff-extra')?.replaceChildren(...extra.map(([name, v, from]) => {
+    const box = make('div', 'diff-x');
+    box.append(counter('b', '', v), make('span', 'caption', name), make('small', '', (from || []).join(' · ')));
+    return box;
+  }));
+}
+
+function renderMilestones(d) {
+  const ul = $('.ms-list');
+  if (!ul) return;
+  const items = [];
+  if (d.contests) items.push(['trophy', `${d.contests === 1 ? 'Contest' : 'Contests'} entered`, `On ${d.contestsOn.join(' & ')}`, d.contests]);
+  d.badges.forEach((b) => items.push(['badge', b.name, `${b.platform} badge`]));
+  d.certificates.forEach((c) => items.push(['cert', c.name, `${c.platform} certificate`]));
+  if (d.languages.length) items.push(['code', d.languages.join(' · '), 'Languages I solve in']);
+  if (d.firstDay) {
+    const since = new Intl.DateTimeFormat('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' }).format(Date.parse(d.firstDay));
+    items.push(['flag', `Since ${since}`, 'First tracked submission']);
+  }
+  ul.replaceChildren(...items.slice(0, 6).map(([icon, title, sub, value]) => {
+    const li = make('li', 'ms');
+    const ic = make('span', 'ms-icon');
+    ic.innerHTML = `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[icon]}</svg>`;
+    const txt = make('span', 'ms-txt');
+    txt.append(make('b', '', title), make('span', '', sub));
+    li.append(ic, txt);
+    if (value !== undefined) li.append(counter('span', 'ms-val', value));
+    return li;
+  }));
+}
+
+function renderTopics(topics) {
+  const ol = $('.topics');
+  if (!ol) return;
+  const top = topics.slice(0, 8);
+  const max = top[0]?.[1] || 1;
+  const meta = $('[data-codolio="topics"]');
+  if (meta) meta.textContent = `${topics.length} topics covered`;
+  ol.replaceChildren(...top.map(([name, n], i) => {
+    const li = make('li', 'tp');
+    li.style.cssText = `--w:${(n / max).toFixed(3)};--i:${i}`;
+    const bar = make('span', 'tp-bar');
+    bar.append(make('i'));
+    li.append(make('span', 'tp-name', name), bar, counter('b', 'tp-num', n));
+    return li;
+  }));
+}
+
+// Cards draw their bars and count their numbers the first time they show
+function revealCard(card) {
+  if (card.classList.contains('is-in')) return;
+  card.classList.add('is-in');
+  if (REDUCED) return;
+  $$('[data-num]', card).forEach((el) => {
+    const to = +el.dataset.num || 0;
+    const o = { v: 0 };
+    gsap.to(o, { v: to, duration: 1.8, ease: 'expo.out', onUpdate: () => { el.textContent = Math.round(o.v); } });
+  });
+}
+
+function practiceCards() {
+  $$('.ps-bento .ps-card').forEach((card, i) => {
+    gsap.from(card, { y: 90, opacity: 0, duration: 1.4, ease: 'expo.out', delay: (i % 2) * .1, scrollTrigger: { trigger: card, start: 'top 92%' } });
+    ScrollTrigger.create({ trigger: card, start: 'top 78%', once: true, onEnter: () => revealCard(card) });
   });
 }
 
 /* =========================================================
-   LIVE NUMBERS — GitHub profile stats + problem counts read
-   from the practice repos. HTML values are the fallback; the
-   result is cached for an hour to respect GitHub's rate limit.
+   LIVE NUMBERS — GitHub profile stats. HTML values are the
+   fallback; the result is cached for an hour to respect
+   GitHub's rate limit.
    ========================================================= */
 const GH = 'Uttkarshchambiyal';
-const PRACTICE = {
-  leetcode: { repo: 'LEET-CODE', count: (tree) => new Set(tree.filter((t) => /^solutions\/[^/]+\/.+\.(c|cpp|py|java)$/.test(t.path)).map((t) => t.path.split('/')[1])).size },
-  hackerrank: { repo: 'hackerrank-c-solutions', count: (tree) => tree.filter((t) => /\.(c|cpp)$/.test(t.path)).length },
-  codeforces: { repo: 'codeforces-problems', count: (tree) => tree.filter((t) => /\.(c|cpp)$/.test(t.path)).length },
-  dsa: { repo: 'dsa-problem-solving-c', count: (tree) => tree.filter((t) => /\.(c|cpp)$/.test(t.path)).length },
-};
 
 async function loadLiveNumbers() {
   let data = null;
@@ -715,15 +1078,9 @@ async function loadLiveNumbers() {
   } catch { /* storage blocked */ }
 
   if (!data) {
-    const get = (url) => {
-      const ctrl = new AbortController();
-      setTimeout(() => ctrl.abort(), 6000);
-      return fetch(url, { signal: ctrl.signal }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
-    };
-    const [user, repos, ...trees] = await Promise.all([
-      get(`https://api.github.com/users/${GH}`),
-      get(`https://api.github.com/users/${GH}/repos?per_page=100`),
-      ...Object.values(PRACTICE).map((p) => get(`https://api.github.com/repos/${GH}/${p.repo}/git/trees/HEAD?recursive=1`)),
+    const [user, repos] = await Promise.all([
+      getJSON(`https://api.github.com/users/${GH}`),
+      getJSON(`https://api.github.com/users/${GH}/repos?per_page=100`),
     ]);
     data = {};
     if (user) { data.repos = user.public_repos; data.followers = user.followers; }
@@ -732,7 +1089,6 @@ async function loadLiveNumbers() {
       data.stars = own.reduce((s, r) => s + (r.stargazers_count || 0), 0);
       data.deploys = own.filter((r) => /^https?:\/\//.test(r.homepage || '')).length;
     }
-    Object.keys(PRACTICE).forEach((k, i) => { const t = trees[i]?.tree; if (Array.isArray(t)) data[k] = PRACTICE[k].count(t); });
     if (Object.keys(data).length) {
       try { localStorage.setItem('live-numbers', JSON.stringify({ at: Date.now(), data })); } catch { /* ignore */ }
     }
@@ -742,12 +1098,6 @@ async function loadLiveNumbers() {
     if (!(data[k] > 0)) return;
     $$(`[data-gh="${k}"]`).forEach((el) => { el.dataset.count = data[k]; if (el.dataset.done) el.textContent = data[k]; });
   });
-  let changed = false;
-  Object.keys(PRACTICE).forEach((k) => {
-    const el = $(`[data-practice="${k}"]`);
-    if (el && data[k] > 0 && +el.dataset.value !== data[k]) { el.dataset.value = data[k]; changed = true; }
-  });
-  if (changed) buildPractice();
 }
 
 // The résumé button appears only once public/resume.pdf exists
