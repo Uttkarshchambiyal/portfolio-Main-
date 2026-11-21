@@ -25,30 +25,39 @@ let lenis = null;
    BOOT
    ========================================================= */
 document.addEventListener('DOMContentLoaded', () => {
-  mountSignatures();
-  splitStatement();
-  bootPractice();
-  buildGraph();
-  initClock();
   initLenis();
-  initUI();
-  initMenu();
-  initLinks();
-  initBackground();
-  initHeroField();
-  initPersonFX();
-  loadLiveNumbers();
 
-  const fonts = document.fonts ? document.fonts.ready : Promise.resolve();
+  const assets = Promise.allSettled([
+    document.fonts?.ready,
+    $('.hp-base')?.decode?.(),
+  ]);
   let hero = null;
   const prepare = () => {
-    document.body.classList.remove('is-loading');
+    // Compile shaders and measure scroll scenes while the loader holds still.
+    mountSignatures();
+    splitStatement();
+    bootPractice();
+    buildGraph();
+    initClock();
+    initUI();
+    initMenu();
+    initLinks();
+    initBackground();
+    initHeroField();
+    initPersonFX();
     hero = intro(true);
     initScroll();
     ScrollTrigger.refresh();
   };
-  runLoader(fonts, prepare, () => hero?.play()).then(() => lenis?.start());
-  window.addEventListener('load', () => ScrollTrigger.refresh());
+  runLoader(assets, prepare, () => hero?.play()).then(() => {
+    document.body.classList.remove('is-loading');
+    ScrollTrigger.refresh();
+    lenis?.start();
+    loadLiveNumbers();
+  });
+  window.addEventListener('load', () => {
+    if (!document.body.classList.contains('is-loading')) ScrollTrigger.refresh();
+  });
 });
 
 /* =========================================================
@@ -76,7 +85,7 @@ function drawSignature(el, { duration = 1.6, delay = 0 } = {}) {
   const total = lens.reduce((a, b) => a + b, 0);
   const tl = gsap.timeline({ delay });
   $$('path', el).forEach((p, i) => {
-    tl.to(p, { strokeDashoffset: 0, duration: duration * (lens[i] / total), ease: i === 0 ? 'power1.inOut' : 'power2.out' });
+    tl.to(p, { autoRound: false, strokeDashoffset: 0, duration: duration * (lens[i] / total), ease: i === 0 ? 'power1.inOut' : 'power2.out' });
   });
   return tl;
 }
@@ -183,50 +192,51 @@ function fadeUp(sel, stagger = 0) {
 /* =========================================================
    LOADER + INTRO
    ========================================================= */
-// prepare: the heavy page setup (scroll scenes, layout refresh). It runs while the
-// logo is holding still, so any stall is invisible, and the exit then plays smoothly.
-// reveal: called as the sheet starts lifting, to start the hero's own entrance.
-function runLoader(fonts, prepare, reveal) {
+// The SVG mark has no font dependency. Setup happens during its still hold;
+// only the two composited curtains move during the transition to the hero.
+async function runLoader(assets, prepare, reveal) {
   const loader = $('.loader');
   const frames = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+  let timeout;
+  const ready = Promise.race([
+    Promise.resolve(assets).catch(() => {}),
+    new Promise((r) => { timeout = setTimeout(r, 1800); }),
+  ]).finally(() => clearTimeout(timeout));
   if (!loader || REDUCED) {
+    await ready;
+    prepare();
     loader?.remove();
-    return Promise.resolve(fonts).then(() => { prepare(); reveal(); });
+    reveal();
+    return;
   }
-  // never hold the screen hostage to a slow font server
-  const fontsOrTimeout = Promise.race([fonts, new Promise((r) => setTimeout(r, 1200))]);
-  return new Promise((resolve) => {
-    const tile = $('.loader-tile');
-    // start: on the lime screen, U and C rise cleanly into place
-    const build = gsap.timeline({ delay: .1 })
-      .from('.loader-cap span', { yPercent: 110, duration: .5, ease: 'expo.out' }, 0)
-      .from('.loader-uc span', { yPercent: 115, duration: .7, ease: 'expo.out', stagger: .07 }, .05)
-      .to({}, { duration: .1 });
-    Promise.all([fontsOrTimeout, new Promise((r) => build.eventCallback('onComplete', r))])
-      .then(() => { prepare(); return frames(); })
-      .then(() => {
-        // end: the letters drop away while an olive tile spins up from nothing and floods
-        // the screen, then that olive sheet lifts off the page. The growth is eased in log
-        // space so it reads as one steady acceleration.
-        const flood = Math.hypot(innerWidth, innerHeight) / tile.offsetWidth * 1.5;
-        const z = { p: 0 };
-        // the tile is drawn big (75vmax) and starts scaled down to ~6px, so it is
-        // rasterised sharp and never stretched up into a blurry edge
-        const from = 6 / tile.offsetWidth;
-        gsap.timeline({ onComplete: () => { loader.remove(); resolve(); } })
-          .to('.loader-cap span', { yPercent: 110, duration: .3, ease: 'power3.in' }, 0)
-          .to('.loader-uc span', { yPercent: -115, duration: .3, ease: 'power3.in', stagger: .04 }, 0)
-          .fromTo(tile, { rotation: -90 }, {
-            rotation: 90, duration: .7, ease: 'power2.in',
-            onStart: () => gsap.set(tile, { scale: from }),
-          }, .12)
-          .to(z, { p: 1, duration: .7, ease: 'power2.in', onUpdate: () => gsap.set(tile, { scale: from * (flood / from) ** z.p }) }, .12)
-          .set(loader, { backgroundColor: 'var(--olive)' })
-          .set(tile, { autoAlpha: 0 })
-          .add(reveal)
-          .to(loader, { yPercent: -100, duration: .75, ease: 'expo.inOut' });
-      });
+
+  // the U writes itself on like a signature
+  const build = gsap.timeline({ paused: true })
+    .fromTo('.loader-mark', { scale: .96 }, { scale: 1, duration: 1.6, ease: 'power3.out' }, 0)
+    .to('.loader-pen', { autoRound: false, strokeDashoffset: 0, duration: 1.4, ease: 'power1.inOut' }, .05)
+    // then the pen sweeps a fine flourish underneath, as it would to finish a signature
+    .to('.loader-swash', { autoRound: false, strokeDashoffset: 0, duration: .5, ease: 'power2.out' }, 1.35)
+    .to({}, { duration: .25 });
+  const built = new Promise((resolve) => build.eventCallback('onComplete', resolve));
+  // start writing only once the first paint behind the cover has settled (max 0.4s)
+  await Promise.race([ready, new Promise((r) => setTimeout(r, 400))]);
+  await frames();
+  build.play();
+
+  await Promise.all([ready, built]);
+  prepare();
+  await frames();
+
+  // exit: the U floats up and fades, then the cover slides up off the page
+  const exit = gsap.timeline({ paused: true })
+    .to('.loader-mark', { y: -30, opacity: 0, duration: .5, ease: 'power2.in' }, 0)
+    .add(reveal, .45)
+    .to(loader, { yPercent: -100, duration: 1, ease: 'expo.inOut', force3D: true }, .15);
+  await new Promise((resolve) => {
+    exit.eventCallback('onComplete', resolve);
+    exit.play();
   });
+  loader.remove();
 }
 
 function intro(paused = false) {
@@ -524,9 +534,9 @@ function heroScene() {
     .to('.note-marquee', { opacity: 1, duration: .2 }, .38)
     .fromTo('.note-marquee', { y: 60 }, { y: 0, duration: .3, ease: 'power2.out' }, .38)
     .to('.scene-caption', { opacity: 1, duration: .1 }, .55)
-    .to(sig[0], { strokeDashoffset: 0, duration: .22 }, .6)
-    .to(sig[1], { strokeDashoffset: 0, duration: .08 }, .82)
-    .to(sig[2], { strokeDashoffset: 0, duration: .06 }, .9)
+    .to(sig[0], { autoRound: false, strokeDashoffset: 0, duration: .22 }, .6)
+    .to(sig[1], { autoRound: false, strokeDashoffset: 0, duration: .08 }, .82)
+    .to(sig[2], { autoRound: false, strokeDashoffset: 0, duration: .06 }, .9)
     .to({}, { duration: .08 });
 }
 
@@ -635,7 +645,7 @@ function journeyScroll() {
     $$('.git-path', git).forEach((p) => {
       const from = p.dataset.from ? at(p, 'from') : 0;
       const to = p.dataset.to ? at(p, 'to') : 1;
-      tl.fromTo(p, { strokeDasharray: '1 1', strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: to - from }, from);
+      tl.fromTo(p, { strokeDasharray: '1 1', strokeDashoffset: 1 }, { autoRound: false, strokeDashoffset: 0, duration: to - from }, from);
     });
     $$('.git-dot, .git-badge, .git-head', git).forEach((el) => {
       tl.fromTo(el, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: .05, ease: 'back.out(3)' }, Math.max(0, at(el) - .02));
@@ -675,7 +685,7 @@ function splitScene() {
   $$('.swoosh path').forEach((p) => { p.style.strokeDasharray = '1 2'; p.style.strokeDashoffset = '1.02'; });
   $$('.split-col').forEach((col) => {
     const st = { trigger: col, start: 'top 75%' };
-    gsap.to($('.swoosh path', col), { strokeDashoffset: 0, duration: .9, delay: .7, ease: 'power2.inOut', scrollTrigger: st });
+    gsap.to($('.swoosh path', col), { autoRound: false, strokeDashoffset: 0, duration: .9, delay: .7, ease: 'power2.inOut', scrollTrigger: st });
     gsap.fromTo($('.split-go', col), { scale: 0, rotation: -90 }, { scale: 1, rotation: 0, duration: 1.1, delay: .8, ease: 'expo.out', scrollTrigger: st });
   });
   [['.split-glyph-l', -45, -10], ['.split-glyph-r', 45, 10]].forEach(([sel, x, r]) => {

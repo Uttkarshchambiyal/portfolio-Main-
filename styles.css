@@ -34,7 +34,7 @@
 
 /* ---------- reset ---------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-text-size-adjust: 100%; overflow-x: clip; }
+html { -webkit-text-size-adjust: 100%; overflow-x: clip; scrollbar-gutter: stable; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 body {
@@ -96,13 +96,14 @@ a:hover > .roll > .roll-in, button:hover > .roll > .roll-in { transform: transla
 
 /* ---------- canvas, loader, signature ---------- */
 .bg-gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; display: block; }
-.loader { position: fixed; inset: 0; z-index: 9000; overflow: hidden; display: grid; place-items: center; background: var(--lime); will-change: transform; }
-/* lime screen, the UC mark rises in; on exit an olive tile spins up and floods the screen */
-.loader-uc { grid-area: 1 / 1; display: flex; overflow: hidden; color: #0d1100; font-weight: 900; font-stretch: 104%; font-size: clamp(64px, 7vw, 104px); line-height: 1; letter-spacing: -.05em; padding: .06em .04em 0; }
-.loader-uc span { display: inline-block; }
-.loader-tile { grid-area: 1 / 1; width: 75vmax; aspect-ratio: 1; border-radius: 25%; background: var(--olive); transform: scale(0); will-change: transform; }
-.loader-cap { position: absolute; left: 0; right: 0; bottom: clamp(18px, 3.4vh, 32px); text-align: center; color: #0d1100; font-weight: 700; overflow: hidden; }
-.loader-cap span { display: inline-block; }
+.loader { position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center; background: var(--paper); will-change: transform; }
+/* the script U, written on like a signature: a filled outline revealed by a wide pen
+   stroke that follows the letter's centre line, in olive on paper like the original signature */
+.loader-mark { width: min(150px, 34vw); height: auto; overflow: visible; color: var(--olive); }
+.loader-u { fill: currentColor; }
+/* the finishing flourish under the U, like the pen stroke under a signature */
+.loader-swash { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 1 2; stroke-dashoffset: 1.02; }
+.loader-pen { fill: none; stroke: #fff; stroke-width: 22; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 2; stroke-dashoffset: 1.02; }
 [data-signature] { display: block; color: var(--lime); }
 [data-signature] svg { display: block; width: 100%; height: auto; overflow: visible; }
 
